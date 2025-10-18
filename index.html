@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SnapTik - TikTok Video Download</title>
+    <meta name="description" content="Download TikTok videos without watermark - Fast, Free, All devices">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="logo">
+                <h1>SnapTik</h1>
+            </div>
+            <nav class="nav">
+                <a href="#features">Features</a>
+                <a href="#how-to">How to use</a>
+                <a href="#faq">FAQ</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <h1 class="hero-title">TikTok Video Download</h1>
+            <h2 class="hero-subtitle">Without Watermark. Fast. All devices</h2>
+            
+            <!-- Download Form -->
+            <div class="download-box">
+                <div class="input-group">
+                    <input 
+                        type="text" 
+                        id="videoUrl" 
+                        class="url-input" 
+                        placeholder="Paste TikTok video link here..."
+                        autocomplete="off"
+                    >
+                    <button id="downloadBtn" class="btn-download">Download</button>
+                </div>
+                <p class="hint">Support: TikTok, Douyin videos</p>
+            </div>
+
+            <!-- Loading State -->
+            <div id="loading" class="loading hidden">
+                <div class="spinner"></div>
+                <p>Processing your video...</p>
+            </div>
+
+            <!-- Result Section -->
+            <div id="result" class="result hidden">
+                <h3>Your video is ready!</h3>
+                <div class="video-info">
+                    <img id="videoThumbnail" src="" alt="Video thumbnail" class="thumbnail">
+                    <div class="info-details">
+                        <p id="videoTitle" class="video-title"></p>
+                        <p id="videoAuthor" class="video-author"></p>
+                    </div>
+                </div>
+                <div class="download-options">
+                    <button class="btn-option btn-primary" id="downloadNoWatermark">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                            <polyline points="7 10 12 15 17 10"></polyline>
+                            <line x1="12" y1="15" x2="12" y2="3"></line>
+                        </svg>
+                        Download (No Watermark)
+                    </button>
+                    <button class="btn-option" id="downloadWithWatermark">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                            <polyline points="7 10 12 15 17 10"></polyline>
+                            <line x1="12" y1="15" x2="12" y2="3"></line>
+                        </svg>
+                        Download (With Watermark)
+                    </button>
+                    <button class="btn-option" id="downloadAudio">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                            <path d="M9 18V5l12-2v13"></path>
+                            <circle cx="6" cy="18" r="3"></circle>
+                            <circle cx="18" cy="16" r="3"></circle>
+                        </svg>
+                        Download MP3
+                    </button>
+                </div>
+            </div>
+
+            <!-- Error Message -->
+            <div id="error" class="error hidden">
+                <p id="errorMessage"></p>
+            </div>
+        </div>
+    </section>
+
+    <!-- App Promotion -->
+    <section class="app-promo">
+        <div class="container">
+            <h2>Download SnapTik App</h2>
+            <p>I now provide an app for downloading TikTok videos. It is fast, easy, with no watermark and HD quality</p>
+            <div class="app-buttons">
+                <a href="#" class="app-btn">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/7/78/Google_Play_Store_badge_EN.svg" alt="Get it on Google Play">
+                </a>
+                <a href="#" class="app-btn">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/3/3c/Download_on_the_App_Store_Badge.svg" alt="Download on App Store">
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="features">
+        <div class="container">
+            <h2>Key features:</h2>
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">🚀</div>
+                    <h3>No Watermark</h3>
+                    <p>Download TikTok videos without watermark for better quality, which most of the tools out there can't.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">📱</div>
+                    <h3>All Devices</h3>
+                    <p>Download TikTok videos on any devices: mobile, PC, or tablet. Works perfectly everywhere.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🌐</div>
+                    <h3>Browser Based</h3>
+                    <p>No need to download or install any software. Use directly from your browser.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">💯</div>
+                    <h3>Always Free</h3>
+                    <p>100% free to use. No hidden fees, no registration required.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🎵</div>
+                    <h3>Download MP3</h3>
+                    <p>Extract audio from TikTok videos and download as MP3 format.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🖼️</div>
+                    <h3>Photo Slideshow</h3>
+                    <p>Download TikTok photo slideshows as MP4 video format with music merged.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- How to Use Section -->
+    <section id="how-to" class="how-to">
+        <div class="container">
+            <h2>How to Download video Tiktok no watermark?</h2>
+            <div class="steps">
+                <div class="step">
+                    <div class="step-number">1</div>
+                    <div class="step-content">
+                        <h3>Open TikTok app</h3>
+                        <p>Open TikTok app on your phone or Web on your browser. Choose whatever video you want to download.</p>
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-number">2</div>
+                    <div class="step-content">
+                        <h3>Copy Link</h3>
+                        <p>Click to the Share button at the right bottom, then click the Copy Link button.</p>
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-number">3</div>
+                    <div class="step-content">
+                        <h3>Paste & Download</h3>
+                        <p>Go back to SnapTik.App and paste your download link to the field above then click Download button.</p>
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-number">4</div>
+                    <div class="step-content">
+                        <h3>Save Video</h3>
+                        <p>Wait for our server to do its job and then, save the video to your device.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section id="faq" class="faq">
+        <div class="container">
+            <h2>Frequently Asked Questions</h2>
+            <div class="faq-list">
+                <div class="faq-item">
+                    <h3>How to get the TikTok video download link?</h3>
+                    <p>Open your TikTok application, choose the TikTok video that you want to download, click Share and at the Share options, find Copy Link button. Your download URL is ready on the clipboard.</p>
+                    <p class="example">For example: https://www.tiktok.com/@username/video/1234567890</p>
+                </div>
+                <div class="faq-item">
+                    <h3>Does SnapTik.App store downloaded videos?</h3>
+                    <p>SnapTik.App doesn't store videos, neither do we keep copies of downloaded videos. All videos are hosted on TikTok's servers. We don't keep track of download histories, making SnapTik.App totally anonymous.</p>
+                </div>
+                <div class="faq-item">
+                    <h3>Do I need to install extensions?</h3>
+                    <p>No. We try to keep things easy for our users. All you need is your TikTok video link. That's it.</p>
+                </div>
+                <div class="faq-item">
+                    <h3>Do I have to pay?</h3>
+                    <p>No, you don't have to pay for anything because our software is always free. You can support us by turning off your Ad Blocks or making donations.</p>
+                </div>
+                <div class="faq-item">
+                    <h3>Can I use this on my Android phone?</h3>
+                    <p>Yes, it's better to use SnapTik to save no-watermark TikTok videos on your Android phone. SnapTik is super FAST, 100% FREE, and getting updated frequently.</p>
+                </div>
+                <div class="faq-item">
+                    <h3>Is there a limit to download TikTok videos?</h3>
+                    <p>No, you can download many of your favorite TikTok videos at SnapTik with no download limit.</p>
+                </div>
+                <div class="faq-item">
+                    <h3>Can I download high resolution videos?</h3>
+                    <p>Yes, SnapTik provides the highest resolution available. If we find a Full HD or higher resolution of a TikTok video, we will immediately show a high quality download link.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-column">
+                    <h4>Company</h4>
+                    <ul>
+                        <li><a href="#contact">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h4>Legal</h4>
+                    <ul>
+                        <li><a href="#terms">Terms of Service</a></li>
+                        <li><a href="#privacy">Privacy Policy</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h4>Tools</h4>
+                    <ul>
+                        <li><a href="#notes">Download TikTok Notes</a></li>
+                        <li><a href="#instagram">SnapInsta Instagram Downloader</a></li>
+                        <li><a href="#douyin">Download Douyin</a></li>
+                        <li><a href="#slide">Download TikTok Slide</a></li>
+                        <li><a href="#story">Download TikTok Story</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>© 2019 - 2025 SnapTik - TikTok Video Download Version 18.4 (150)</p>
+                <p class="disclaimer">Note: SnapTik (TikTok video Downloader) is not a tool of TikTok, we have no relationship with TikTok or ByteDance Ltd.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/app.js"></script>
+</body>
+</html>
