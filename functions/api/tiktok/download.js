@@ -40,70 +40,88 @@ export async function onRequestPost(context) {
       });
     }
 
-    // Try alternative API - SnapTik API (more reliable)
-    const apiEndpoint = 'https://snaptik.app/abc2.php';
-    
-    // Build form data
-    const formBody = `url=${encodeURIComponent(tiktokUrl)}`;
+    // Method: Direct fetch from TikTok - get video info from page HTML
+    try {
+      // Fetch the TikTok video page
+      const pageResponse = await fetch(tiktokUrl, {
+        headers: {
+          'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.0.0 Safari/537.36',
+          'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+          'Accept-Language': 'en-US,en;q=0.9',
+          'Referer': 'https://www.tiktok.com/'
+        }
+      });
 
-    const response = await fetch(apiEndpoint, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded',
-        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
-        'Accept': '*/*',
-        'Origin': 'https://snaptik.app',
-        'Referer': 'https://snaptik.app/'
-      },
-      body: formBody
-    });
+      const html = await pageResponse.text();
+      
+      // Extract video data from HTML (it's in a script tag)
+      const videoDataMatch = html.match(/<script id="__UNIVERSAL_DATA_FOR_REHYDRATION__" type="application\/json">(.*?)<\/script>/);
+      
+      if (!videoDataMatch) {
+        return new Response(JSON.stringify({ 
+          success: false, 
+          error: 'Could not extract video data from page',
+          details: 'Video may be private or URL is invalid'
+        }), {
+          status: 404,
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+        });
+      }
 
-    const html = await response.text();
-    
-    // Parse HTML response to extract video URLs
-    const hdMatch = html.match(/href="([^"]+)"[^>]*>Download HD</i);
-    const wmMatch = html.match(/href="([^"]+)"[^>]*>Download \(watermark\)/i);
-    const audioMatch = html.match(/href="([^"]+)"[^>]*>Download MP3/i);
-    
-    if (!hdMatch && !wmMatch) {
-      return new Response(JSON.stringify({ 
-        success: false, 
-        error: 'Could not extract video URLs',
-        details: {
-          message: 'API response parsing failed',
-          requestUrl: tiktokUrl
+      const videoData = JSON.parse(videoDataMatch[1]);
+      const videoDetail = videoData?.__DEFAULT_SCOPE__?.['webapp.video-detail']?.itemInfo?.itemStruct;
+      
+      if (!videoDetail) {
+        return new Response(JSON.stringify({ 
+          success: false, 
+          error: 'Video data structure not found'
+        }), {
+          status: 404,
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+        });
+      }
+
+      // Get current host for proxy URLs
+      const requestUrl = new URL(context.request.url);
+      const hostUrl = `${requestUrl.protocol}//${requestUrl.host}`;
+
+      // Extract video URLs - TikTok provides playAddr (no watermark) and downloadAddr (with watermark)
+      const playAddr = videoDetail.video?.playAddr || videoDetail.video?.downloadAddr;
+      const downloadAddr = videoDetail.video?.downloadAddr || videoDetail.video?.playAddr;
+      const musicUrl = videoDetail.music?.playUrl;
+
+      return new Response(JSON.stringify({
+        success: true,
+        data: {
+          videoId: videoDetail.id || '',
+          title: videoDetail.desc || 'TikTok Video',
+          author: videoDetail.author?.nickname || 'Unknown',
+          authorUsername: videoDetail.author?.uniqueId || 'unknown',
+          thumbnail: videoDetail.video?.cover || videoDetail.video?.dynamicCover || '',
+          duration: videoDetail.video?.duration || 0,
+          videoNoWatermark: playAddr ? `${hostUrl}/api/tiktok/proxy?url=${encodeURIComponent(playAddr)}` : '',
+          videoWithWatermark: downloadAddr ? `${hostUrl}/api/tiktok/proxy?url=${encodeURIComponent(downloadAddr)}` : '',
+          audioUrl: musicUrl ? `${hostUrl}/api/tiktok/proxy?url=${encodeURIComponent(musicUrl)}` : '',
+          views: videoDetail.stats?.playCount || 0,
+          likes: videoDetail.stats?.diggCount || 0,
+          shares: videoDetail.stats?.shareCount || 0,
+          comments: videoDetail.stats?.commentCount || 0
         }
       }), {
-        status: 404,
+        status: 200,
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+      });
+
+    } catch (parseError) {
+      return new Response(JSON.stringify({ 
+        success: false, 
+        error: 'Failed to parse video data',
+        details: parseError.message
+      }), {
+        status: 500,
         headers: { ...corsHeaders, 'Content-Type': 'application/json' }
       });
     }
-
-    // Get current host for proxy URLs
-    const requestUrl = new URL(context.request.url);
-    const hostUrl = `${requestUrl.protocol}//${requestUrl.host}`;
-
-    return new Response(JSON.stringify({
-      success: true,
-      data: {
-        videoId: '',
-        title: 'TikTok Video',
-        author: 'TikTok User',
-        authorUsername: 'user',
-        thumbnail: '',
-        duration: 0,
-        videoNoWatermark: hdMatch ? `${hostUrl}/api/tiktok/proxy?url=${encodeURIComponent(hdMatch[1])}` : '',
-        videoWithWatermark: wmMatch ? `${hostUrl}/api/tiktok/proxy?url=${encodeURIComponent(wmMatch[1])}` : '',
-        audioUrl: audioMatch ? `${hostUrl}/api/tiktok/proxy?url=${encodeURIComponent(audioMatch[1])}` : '',
-        views: 0,
-        likes: 0,
-        shares: 0,
-        comments: 0
-      }
-    }), {
-      status: 200,
-      headers: { ...corsHeaders, 'Content-Type': 'application/json' }
-    });
 
   } catch (error) {
     return new Response(JSON.stringify({ 
