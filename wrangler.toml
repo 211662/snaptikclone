@@ -1,7 +1,0 @@
-name = "snaptik"
-main = "worker-simple.js"
-compatibility_date = "2024-01-01"
-
-# Bindings
-[vars]
-ENVIRONMENT = "production"
