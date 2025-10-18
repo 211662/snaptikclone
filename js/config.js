@@ -1,12 +1,12 @@
 // API Configuration
-// For Cloudflare Workers deployment, API is on the same domain
+// For Cloudflare Workers deployment
 
 const API_CONFIG = {
     // Local development
     development: 'http://localhost:3000',
     
-    // Production - For Cloudflare Workers, use empty string (same domain)
-    production: '',
+    // Production - Cloudflare Worker URL
+    production: 'https://snaptik-prod2.phucdeveloper-it.workers.dev',
     
     // Get current environment
     get baseURL() {
@@ -14,7 +14,7 @@ const API_CONFIG = {
         if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
             return this.development;
         }
-        // On Cloudflare Workers, API is on same domain
+        // On production, use Worker URL
         return this.production;
     }
 };
