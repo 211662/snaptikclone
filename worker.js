@@ -1,8 +1,6 @@
 // Cloudflare Workers - Serverless Backend
 // This replaces the Express server for Cloudflare deployment
 
-import { getTikTokVideoData } from './workers/tiktokApi';
-
 export default {
   async fetch(request, env, ctx) {
     const url = new URL(request.url);
