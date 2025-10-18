@@ -69,6 +69,98 @@ exports.getVideoInfo = async (req, res) => {
 };
 
 /**
+ * Get all videos from a TikTok profile
+ */
+exports.getProfileVideos = async (req, res) => {
+    try {
+        const { username } = req.params;
+        const limit = parseInt(req.query.limit) || 30; // Default 30 videos
+
+        // Validate username
+        if (!username) {
+            return res.status(400).json({
+                success: false,
+                error: 'Username is required'
+            });
+        }
+
+        // Clean username (remove @ if present)
+        const cleanUsername = username.replace('@', '');
+
+        console.log(`Fetching videos for profile: @${cleanUsername}`);
+
+        // Try to fetch profile videos using TikWM API
+        const tikwmResponse = await axios.post('https://www.tikwm.com/api/user/posts', {
+            unique_id: cleanUsername,
+            count: limit,
+            cursor: 0
+        }, {
+            headers: {
+                'Content-Type': 'application/json',
+                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
+            },
+            timeout: 15000
+        });
+
+        if (tikwmResponse.data && tikwmResponse.data.code === 0 && tikwmResponse.data.data) {
+            const videos = tikwmResponse.data.data.videos || [];
+            
+            // Format videos for frontend
+            const formattedVideos = videos.map(video => ({
+                id: video.video_id || video.aweme_id,
+                url: `https://www.tiktok.com/@${cleanUsername}/video/${video.video_id || video.aweme_id}`,
+                title: video.title || video.desc || 'TikTok Video',
+                thumbnail: video.cover || video.origin_cover,
+                cover: video.dynamic_cover || video.cover,
+                duration: video.duration || 0,
+                views: video.play_count || 0,
+                likes: video.digg_count || 0,
+                comments: video.comment_count || 0,
+                shares: video.share_count || 0,
+                createTime: video.create_time || 0,
+                author: {
+                    username: cleanUsername,
+                    nickname: video.author?.nickname || cleanUsername,
+                    avatar: video.author?.avatar || ''
+                }
+            }));
+
+            return res.json({
+                success: true,
+                username: cleanUsername,
+                count: formattedVideos.length,
+                videos: formattedVideos
+            });
+        }
+
+        // If TikWM fails, return error
+        return res.status(404).json({
+            success: false,
+            error: 'Profile not found or videos could not be fetched',
+            message: 'The profile may be private or does not exist'
+        });
+
+    } catch (error) {
+        console.error('Error in getProfileVideos:', error.message);
+        
+        // Handle specific errors
+        if (error.response) {
+            return res.status(error.response.status).json({
+                success: false,
+                error: 'Failed to fetch profile videos',
+                message: error.response.data?.msg || error.message
+            });
+        }
+
+        res.status(500).json({
+            success: false,
+            error: 'Failed to fetch profile videos',
+            message: process.env.NODE_ENV === 'development' ? error.message : undefined
+        });
+    }
+};
+
+/**
  * Download video directly
  */
 exports.downloadVideo = async (req, res) => {

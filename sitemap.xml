@@ -12,6 +12,14 @@
         <priority>1.0</priority>
     </url>
     
+    <!-- Bulk Download Page -->
+    <url>
+        <loc>https://snaptikks.com/bulk-download.html</loc>
+        <lastmod>2025-10-18</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.8</priority>
+    </url>
+    
     <!-- Contact Page -->
     <url>
         <loc>https://snaptikks.com/contact.html</loc>
