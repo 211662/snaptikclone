@@ -96,7 +96,8 @@ function isValidTikTokUrl(url) {
 // Fetch video data from backend API
 async function fetchVideoData(url) {
     try {
-        const response = await fetch('/api/tiktok/download', {
+        const apiURL = window.API_CONFIG ? window.API_CONFIG.baseURL : '';
+        const response = await fetch(`${apiURL}/api/tiktok/download`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -188,8 +189,9 @@ function downloadFile(url, filename) {
         return;
     }
     
-    // Since we're using proxy, the URL is relative - open in new tab
-    const fullUrl = url.startsWith('http') ? url : window.location.origin + url;
+    // Build full URL with backend
+    const apiURL = window.API_CONFIG ? window.API_CONFIG.baseURL : '';
+    const fullUrl = url.startsWith('http') ? url : apiURL + url;
     
     // Open download in new window
     window.open(fullUrl, '_blank');

@@ -1,0 +1,26 @@
+# Cloudflare Pages - Frontend Only
+
+# This file tells Cloudflare Pages how to build the frontend
+# The backend should be deployed separately (Railway, Heroku, Render, etc.)
+
+[build]
+  command = "echo 'No build needed - static files only'"
+  publish = "."
+
+[build.environment]
+  NODE_VERSION = "18"
+
+# Redirect API calls to backend (update with your backend URL)
+[[redirects]]
+  from = "/api/*"
+  to = "https://your-backend-url.railway.app/api/:splat"
+  status = 200
+  force = true
+
+# Headers for security
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "DENY"
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"

@@ -1,0 +1,8 @@
+# Static frontend files only (for Cloudflare Pages)
+
+# Serve index.html
+/*    /index.html   200
+
+# API proxy - redirect to backend
+# Replace YOUR_BACKEND_URL with actual Railway/Heroku URL
+/api/*  https://YOUR_BACKEND_URL.railway.app/api/:splat  200
