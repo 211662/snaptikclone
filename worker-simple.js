@@ -81,7 +81,10 @@ export default {
           });
         }
 
-        // Return video data with proxied URLs
+        // Get Worker base URL for proxy
+        const workerBaseUrl = `${url.protocol}//${url.host}`;
+        
+        // Return video data with proxied URLs (absolute URLs for production)
         return new Response(JSON.stringify({
           success: true,
           data: {
@@ -91,9 +94,9 @@ export default {
             authorUsername: videoData.authorUsername,
             thumbnail: videoData.thumbnail,
             duration: videoData.duration,
-            videoNoWatermark: `/api/tiktok/proxy?url=${encodeURIComponent(videoData.videoNoWatermark)}`,
-            videoWithWatermark: `/api/tiktok/proxy?url=${encodeURIComponent(videoData.videoWithWatermark)}`,
-            audioUrl: `/api/tiktok/proxy?url=${encodeURIComponent(videoData.audioUrl)}`,
+            videoNoWatermark: `${workerBaseUrl}/api/tiktok/proxy?url=${encodeURIComponent(videoData.videoNoWatermark)}`,
+            videoWithWatermark: `${workerBaseUrl}/api/tiktok/proxy?url=${encodeURIComponent(videoData.videoWithWatermark)}`,
+            audioUrl: `${workerBaseUrl}/api/tiktok/proxy?url=${encodeURIComponent(videoData.audioUrl)}`,
             views: videoData.views,
             likes: videoData.likes,
             shares: videoData.shares,
