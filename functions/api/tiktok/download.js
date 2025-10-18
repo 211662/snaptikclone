@@ -40,34 +40,37 @@ export async function onRequestPost(context) {
       });
     }
 
-    // Fetch from TikWM API
-    const apiEndpoint = 'https://www.tikwm.com/api/';
+    // Try alternative API - SnapTik API (more reliable)
+    const apiEndpoint = 'https://snaptik.app/abc2.php';
     
-    // Build form data string manually
-    const formBody = `url=${encodeURIComponent(tiktokUrl)}&hd=1`;
+    // Build form data
+    const formBody = `url=${encodeURIComponent(tiktokUrl)}`;
 
     const response = await fetch(apiEndpoint, {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
-        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.0.0 Safari/537.36',
-        'Accept': 'application/json, text/plain, */*',
-        'Referer': 'https://www.tikwm.com/',
-        'Origin': 'https://www.tikwm.com'
+        'Content-Type': 'application/x-www-form-urlencoded',
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
+        'Accept': '*/*',
+        'Origin': 'https://snaptik.app',
+        'Referer': 'https://snaptik.app/'
       },
       body: formBody
     });
 
-    const data = await response.json();
-
-    // Better error handling with details
-    if (data.code !== 0 || !data.data) {
+    const html = await response.text();
+    
+    // Parse HTML response to extract video URLs
+    const hdMatch = html.match(/href="([^"]+)"[^>]*>Download HD</i);
+    const wmMatch = html.match(/href="([^"]+)"[^>]*>Download \(watermark\)/i);
+    const audioMatch = html.match(/href="([^"]+)"[^>]*>Download MP3/i);
+    
+    if (!hdMatch && !wmMatch) {
       return new Response(JSON.stringify({ 
         success: false, 
-        error: 'Failed to fetch video data',
+        error: 'Could not extract video URLs',
         details: {
-          apiCode: data.code,
-          apiMessage: data.msg || 'No message',
+          message: 'API response parsing failed',
           requestUrl: tiktokUrl
         }
       }), {
@@ -76,37 +79,26 @@ export async function onRequestPost(context) {
       });
     }
 
-    const baseUrl = 'https://www.tikwm.com';
-    const getAbsoluteUrl = (relativeUrl) => {
-      if (!relativeUrl) return '';
-      if (relativeUrl.startsWith('http')) return relativeUrl;
-      return baseUrl + relativeUrl;
-    };
-
     // Get current host for proxy URLs
     const requestUrl = new URL(context.request.url);
     const hostUrl = `${requestUrl.protocol}//${requestUrl.host}`;
 
-    // Priority: hdplay (HD no watermark) > play (may be no watermark) > wmplay (with watermark)
-    const noWatermarkUrl = data.data.hdplay || data.data.play || data.data.wmplay;
-    const withWatermarkUrl = data.data.wmplay || data.data.play;
-
     return new Response(JSON.stringify({
       success: true,
       data: {
-        videoId: data.data.id || '',
-        title: data.data.title || 'TikTok Video',
-        author: data.data.author?.nickname || 'Unknown',
-        authorUsername: data.data.author?.unique_id || 'unknown',
-        thumbnail: getAbsoluteUrl(data.data.cover || data.data.origin_cover),
-        duration: data.data.duration || 0,
-        videoNoWatermark: `${hostUrl}/api/tiktok/proxy?url=${encodeURIComponent(getAbsoluteUrl(noWatermarkUrl))}`,
-        videoWithWatermark: `${hostUrl}/api/tiktok/proxy?url=${encodeURIComponent(getAbsoluteUrl(withWatermarkUrl))}`,
-        audioUrl: `${hostUrl}/api/tiktok/proxy?url=${encodeURIComponent(getAbsoluteUrl(data.data.music))}`,
-        views: data.data.play_count || 0,
-        likes: data.data.digg_count || 0,
-        shares: data.data.share_count || 0,
-        comments: data.data.comment_count || 0
+        videoId: '',
+        title: 'TikTok Video',
+        author: 'TikTok User',
+        authorUsername: 'user',
+        thumbnail: '',
+        duration: 0,
+        videoNoWatermark: hdMatch ? `${hostUrl}/api/tiktok/proxy?url=${encodeURIComponent(hdMatch[1])}` : '',
+        videoWithWatermark: wmMatch ? `${hostUrl}/api/tiktok/proxy?url=${encodeURIComponent(wmMatch[1])}` : '',
+        audioUrl: audioMatch ? `${hostUrl}/api/tiktok/proxy?url=${encodeURIComponent(audioMatch[1])}` : '',
+        views: 0,
+        likes: 0,
+        shares: 0,
+        comments: 0
       }
     }), {
       status: 200,
