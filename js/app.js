@@ -144,6 +144,14 @@ function displayResults(data) {
     videoTitle.textContent = data.title;
     videoAuthor.textContent = data.author;
     
+    // Add warning message if present
+    if (data.warning) {
+        const warningDiv = document.createElement('div');
+        warningDiv.style.cssText = 'padding: 10px; background: #fff3cd; border-radius: 5px; margin: 10px 0; color: #856404;';
+        warningDiv.innerHTML = `<strong>ℹ️ Note:</strong> ${data.warning}`;
+        resultSection.insertBefore(warningDiv, resultSection.firstChild);
+    }
+    
     // Add video stats if available
     if (data.views || data.likes) {
         const statsText = [];
@@ -156,10 +164,22 @@ function displayResults(data) {
         }
     }
     
-    // Set up download buttons
-    downloadNoWatermark.onclick = () => downloadFile(data.videoNoWatermark, 'tiktok_video_no_watermark.mp4');
-    downloadWithWatermark.onclick = () => downloadFile(data.videoWithWatermark, 'tiktok_video.mp4');
-    downloadAudio.onclick = () => downloadFile(data.audioUrl, 'tiktok_audio.mp3');
+    // Set up download buttons - just open TikTok URL
+    downloadNoWatermark.onclick = () => {
+        window.open(data.videoNoWatermark, '_blank');
+        showSuccessMessage('Opening TikTok video. Right-click on video and select "Save video as..." to download.');
+    };
+    downloadWithWatermark.onclick = () => {
+        window.open(data.videoWithWatermark, '_blank');
+        showSuccessMessage('Opening TikTok video. Right-click on video and select "Save video as..." to download.');
+    };
+    downloadAudio.onclick = () => {
+        if (data.audioUrl) {
+            window.open(data.audioUrl, '_blank');
+        } else {
+            showError('Audio download not available for this video.');
+        }
+    };
     
     resultSection.classList.remove('hidden');
 }

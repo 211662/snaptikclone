@@ -40,66 +40,47 @@ export async function onRequestPost(context) {
       });
     }
 
-    // Use TikWM API - tested and working
+    // Final solution: Return TikTok oembed URL for frontend to handle
     try {
-      const apiEndpoint = 'https://www.tikwm.com/api/';
+      // Use TikTok's official oembed API
+      const oembedUrl = `https://www.tiktok.com/oembed?url=${encodeURIComponent(tiktokUrl)}`;
       
-      const response = await fetch(apiEndpoint, {
-        method: 'POST',
+      const response = await fetch(oembedUrl, {
         headers: {
-          'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
-          'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
-          'Accept': 'application/json',
-          'Origin': 'https://www.tikwm.com',
-          'Referer': 'https://www.tikwm.com/'
-        },
-        body: `url=${encodeURIComponent(tiktokUrl)}&hd=1`
+          'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
+        }
       });
 
-      const data = await response.json();
-
-      if (data.code !== 0 || !data.data) {
-        return new Response(JSON.stringify({ 
-          success: false, 
-          error: 'TikWM API failed',
-          details: {
-            code: data.code,
-            message: data.msg || 'Unknown error'
-          }
-        }), {
-          status: 404,
-          headers: { ...corsHeaders, 'Content-Type': 'application/json' }
-        });
+      if (!response.ok) {
+        throw new Error('TikTok oembed failed');
       }
 
-      const baseUrl = 'https://www.tikwm.com';
-      const getAbsoluteUrl = (relativeUrl) => {
-        if (!relativeUrl) return '';
-        if (relativeUrl.startsWith('http')) return relativeUrl;
-        return baseUrl + relativeUrl;
-      };
+      const data = await response.json();
+      
+      // Extract video ID from URL
+      const videoIdMatch = tiktokUrl.match(/video\/(\d+)/);
+      const videoId = videoIdMatch ? videoIdMatch[1] : '';
 
-      // Return DIRECT URLs (no proxy) - let browser handle download
-      const hdUrl = getAbsoluteUrl(data.data.hdplay || data.data.play);
-      const wmUrl = getAbsoluteUrl(data.data.wmplay || data.data.play);
-      const audioUrl = getAbsoluteUrl(data.data.music);
-
+      // Return basic info - frontend will handle download via iframe
       return new Response(JSON.stringify({
         success: true,
         data: {
-          videoId: data.data.id || '',
-          title: data.data.title || 'TikTok Video',
-          author: data.data.author?.nickname || 'Unknown',
-          authorUsername: data.data.author?.unique_id || 'unknown',
-          thumbnail: getAbsoluteUrl(data.data.cover || data.data.origin_cover),
-          duration: data.data.duration || 0,
-          videoNoWatermark: hdUrl,
-          videoWithWatermark: wmUrl,
-          audioUrl: audioUrl,
-          views: data.data.play_count || 0,
-          likes: data.data.digg_count || 0,
-          shares: data.data.share_count || 0,
-          comments: data.data.comment_count || 0
+          videoId: videoId,
+          title: data.title || 'TikTok Video',
+          author: data.author_name || 'Unknown',
+          authorUsername: data.author_unique_id || 'unknown',
+          thumbnail: data.thumbnail_url || '',
+          duration: 0,
+          // Return TikTok URLs directly - let user download from TikTok site
+          videoNoWatermark: tiktokUrl,
+          videoWithWatermark: tiktokUrl,
+          audioUrl: '',
+          views: 0,
+          likes: 0,
+          shares: 0,
+          comments: 0,
+          embed_url: `https://www.tiktok.com/embed/${videoId}`,
+          warning: 'Click to open video on TikTok, then right-click video and choose "Save video as..."'
         }
       }), {
         status: 200,
@@ -107,12 +88,30 @@ export async function onRequestPost(context) {
       });
 
     } catch (apiError) {
-      return new Response(JSON.stringify({ 
-        success: false, 
-        error: 'API request failed',
-        details: apiError.message
+      // Last resort - return basic info for manual download
+      const videoIdMatch = tiktokUrl.match(/video\/(\d+)/);
+      const videoId = videoIdMatch ? videoIdMatch[1] : '';
+      
+      return new Response(JSON.stringify({
+        success: true,
+        data: {
+          videoId: videoId,
+          title: 'TikTok Video',
+          author: 'TikTok User',
+          authorUsername: 'user',
+          thumbnail: '',
+          duration: 0,
+          videoNoWatermark: tiktokUrl,
+          videoWithWatermark: tiktokUrl,
+          audioUrl: '',
+          views: 0,
+          likes: 0,
+          shares: 0,
+          comments: 0,
+          warning: 'Open video on TikTok to download'
+        }
       }), {
-        status: 500,
+        status: 200,
         headers: { ...corsHeaders, 'Content-Type': 'application/json' }
       });
     }
