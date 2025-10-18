@@ -1,12 +1,12 @@
 // API Configuration
-// For Cloudflare Workers deployment
+// For Cloudflare Pages Functions deployment
 
 const API_CONFIG = {
     // Local development
     development: 'http://localhost:3000',
     
-    // Production - Cloudflare Worker URL
-    production: 'https://snaptik-prod2.phucdeveloper-it.workers.dev',
+    // Production - Use same domain (Cloudflare Pages Functions)
+    production: '',
     
     // Get current environment
     get baseURL() {
@@ -14,7 +14,7 @@ const API_CONFIG = {
         if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
             return this.development;
         }
-        // On production, use Worker URL
+        // On production, use same domain (Pages Functions)
         return this.production;
     }
 };
