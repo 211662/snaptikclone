@@ -5,8 +5,8 @@ const API_CONFIG = {
     // Local development
     development: 'http://localhost:3000',
     
-    // Production - Use same domain (Cloudflare Pages Functions)
-    production: '',
+    // Production - DigitalOcean VPS with custom domain
+    production: 'https://snaptikks.com',
     
     // Get current environment
     get baseURL() {
