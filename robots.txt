@@ -1,0 +1,18 @@
+User-agent: *
+Allow: /
+
+# Sitemaps
+Sitemap: https://snaptikks.com/sitemap.xml
+
+# Disallow private areas
+Disallow: /webhook/
+Disallow: /api/
+Disallow: *.json
+
+# Allow specific files
+Allow: /css/
+Allow: /js/
+Allow: /*.html$
+
+# Crawl-delay
+Crawl-delay: 1
