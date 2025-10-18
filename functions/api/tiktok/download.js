@@ -81,6 +81,10 @@ export async function onRequestPost(context) {
     const requestUrl = new URL(context.request.url);
     const hostUrl = `${requestUrl.protocol}//${requestUrl.host}`;
 
+    // Priority: hdplay (HD no watermark) > play (may be no watermark) > wmplay (with watermark)
+    const noWatermarkUrl = data.data.hdplay || data.data.play || data.data.wmplay;
+    const withWatermarkUrl = data.data.wmplay || data.data.play;
+
     return new Response(JSON.stringify({
       success: true,
       data: {
@@ -90,8 +94,8 @@ export async function onRequestPost(context) {
         authorUsername: data.data.author?.unique_id || 'unknown',
         thumbnail: getAbsoluteUrl(data.data.cover || data.data.origin_cover),
         duration: data.data.duration || 0,
-        videoNoWatermark: `${hostUrl}/api/tiktok/proxy?url=${encodeURIComponent(getAbsoluteUrl(data.data.hdplay || data.data.play))}`,
-        videoWithWatermark: `${hostUrl}/api/tiktok/proxy?url=${encodeURIComponent(getAbsoluteUrl(data.data.wmplay || data.data.play))}`,
+        videoNoWatermark: `${hostUrl}/api/tiktok/proxy?url=${encodeURIComponent(getAbsoluteUrl(noWatermarkUrl))}`,
+        videoWithWatermark: `${hostUrl}/api/tiktok/proxy?url=${encodeURIComponent(getAbsoluteUrl(withWatermarkUrl))}`,
         audioUrl: `${hostUrl}/api/tiktok/proxy?url=${encodeURIComponent(getAbsoluteUrl(data.data.music))}`,
         views: data.data.play_count || 0,
         likes: data.data.digg_count || 0,

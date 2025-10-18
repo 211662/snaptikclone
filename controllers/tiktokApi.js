@@ -115,6 +115,10 @@ async function getVideoFromPublicAPI(url) {
                 return baseUrl + url;
             };
             
+            // Priority: hdplay (HD no watermark) > play (may be no watermark) > wmplay (with watermark)
+            const noWatermarkUrl = data.hdplay || data.play || data.wmplay;
+            const withWatermarkUrl = data.wmplay || data.play;
+            
             return {
                 success: true,
                 videoId: data.id || '',
@@ -123,8 +127,8 @@ async function getVideoFromPublicAPI(url) {
                 authorUsername: data.author?.unique_id || 'unknown',
                 thumbnail: getAbsoluteUrl(data.cover || data.origin_cover),
                 duration: data.duration || 0,
-                videoNoWatermark: getAbsoluteUrl(data.hdplay || data.play),
-                videoWithWatermark: getAbsoluteUrl(data.wmplay || data.play),
+                videoNoWatermark: getAbsoluteUrl(noWatermarkUrl),
+                videoWithWatermark: getAbsoluteUrl(withWatermarkUrl),
                 audioUrl: getAbsoluteUrl(data.music),
                 views: data.play_count || 0,
                 likes: data.digg_count || 0,

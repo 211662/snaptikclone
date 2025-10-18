@@ -250,6 +250,10 @@ async function fetchTikTokVideo(tiktokUrl) {
         return baseUrl + relativeUrl;
       };
 
+      // Priority: hdplay (HD no watermark) > play (may be no watermark) > wmplay (with watermark)
+      const noWatermarkUrl = data.data.hdplay || data.data.play || data.data.wmplay;
+      const withWatermarkUrl = data.data.wmplay || data.data.play;
+
       return {
         success: true,
         videoId: data.data.id || '',
@@ -258,8 +262,8 @@ async function fetchTikTokVideo(tiktokUrl) {
         authorUsername: data.data.author?.unique_id || 'unknown',
         thumbnail: getAbsoluteUrl(data.data.cover || data.data.origin_cover),
         duration: data.data.duration || 0,
-        videoNoWatermark: getAbsoluteUrl(data.data.hdplay || data.data.play),
-        videoWithWatermark: getAbsoluteUrl(data.data.wmplay || data.data.play),
+        videoNoWatermark: getAbsoluteUrl(noWatermarkUrl),
+        videoWithWatermark: getAbsoluteUrl(withWatermarkUrl),
         audioUrl: getAbsoluteUrl(data.data.music),
         views: data.data.play_count || 0,
         likes: data.data.digg_count || 0,
