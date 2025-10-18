@@ -1,4 +1,4 @@
-name = "snaptik-prod2"
+name = "snaptik-prodd"
 main = "worker-simple.js"
 compatibility_date = "2024-01-01"
 
