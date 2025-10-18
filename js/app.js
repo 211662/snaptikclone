@@ -190,15 +190,29 @@ function downloadFile(url, filename) {
         return;
     }
     
-    // Build full URL with backend
-    const apiURL = window.API_CONFIG ? window.API_CONFIG.baseURL : '';
-    const fullUrl = url.startsWith('http') ? url : apiURL + url;
+    // Check if URL needs proxy
+    const needsProxy = url.startsWith('/api/tiktok/proxy');
     
-    // Open download in new window
-    window.open(fullUrl, '_blank');
-    
-    // Show success message
-    showSuccessMessage('Download started! If download doesn\'t start automatically, please allow pop-ups for this site.');
+    if (needsProxy) {
+        // Build full URL with backend
+        const apiURL = window.API_CONFIG ? window.API_CONFIG.baseURL : '';
+        const fullUrl = apiURL + url;
+        
+        // Extract the actual video URL from proxy
+        const urlParams = new URLSearchParams(url.split('?')[1]);
+        const actualUrl = urlParams.get('url');
+        
+        if (actualUrl) {
+            // Direct download - open in new tab to bypass CORS
+            window.open(decodeURIComponent(actualUrl), '_blank');
+            showSuccessMessage('Opening download in new tab. If blocked, please allow pop-ups.');
+        } else {
+            window.open(fullUrl, '_blank');
+        }
+    } else {
+        // Direct URL
+        window.open(url, '_blank');
+    }
 }
 
 // Show success message
