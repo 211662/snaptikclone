@@ -1,12 +1,12 @@
 // API Configuration
-// Update this with your deployed backend URL
+// For Cloudflare Workers deployment, API is on the same domain
 
 const API_CONFIG = {
     // Local development
     development: 'http://localhost:3000',
     
-    // Production - UPDATE THIS after deploying backend
-    production: 'https://your-app-name.railway.app',
+    // Production - For Cloudflare Workers, use empty string (same domain)
+    production: '',
     
     // Get current environment
     get baseURL() {
@@ -14,6 +14,7 @@ const API_CONFIG = {
         if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
             return this.development;
         }
+        // On Cloudflare Workers, API is on same domain
         return this.production;
     }
 };

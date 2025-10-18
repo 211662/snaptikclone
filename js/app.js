@@ -96,6 +96,7 @@ function isValidTikTokUrl(url) {
 // Fetch video data from backend API
 async function fetchVideoData(url) {
     try {
+        // For Cloudflare Workers, API is on the same domain
         const apiURL = window.API_CONFIG ? window.API_CONFIG.baseURL : '';
         const response = await fetch(`${apiURL}/api/tiktok/download`, {
             method: 'POST',
