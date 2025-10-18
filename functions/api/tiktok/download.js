@@ -42,28 +42,34 @@ export async function onRequestPost(context) {
 
     // Fetch from TikWM API
     const apiEndpoint = 'https://www.tikwm.com/api/';
-    const formData = new URLSearchParams();
-    formData.append('url', tiktokUrl);
-    formData.append('count', '12');
-    formData.append('cursor', '0');
-    formData.append('web', '1');
-    formData.append('hd', '1');
+    
+    // Build form data string manually
+    const formBody = `url=${encodeURIComponent(tiktokUrl)}&hd=1`;
 
     const response = await fetch(apiEndpoint, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
-        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.0.0 Safari/537.36',
+        'Accept': 'application/json, text/plain, */*',
+        'Referer': 'https://www.tikwm.com/',
+        'Origin': 'https://www.tikwm.com'
       },
-      body: formData
+      body: formBody
     });
 
     const data = await response.json();
 
+    // Better error handling with details
     if (data.code !== 0 || !data.data) {
       return new Response(JSON.stringify({ 
         success: false, 
-        error: 'Failed to fetch video data' 
+        error: 'Failed to fetch video data',
+        details: {
+          apiCode: data.code,
+          apiMessage: data.msg || 'No message',
+          requestUrl: tiktokUrl
+        }
       }), {
         status: 404,
         headers: { ...corsHeaders, 'Content-Type': 'application/json' }
