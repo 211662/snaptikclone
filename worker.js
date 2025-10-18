@@ -112,8 +112,15 @@ export default {
       }
     }
 
-    // Serve static files (frontend)
-    return env.ASSETS.fetch(request);
+    // Return 404 for unknown routes
+    return new Response(JSON.stringify({ 
+      success: false, 
+      error: 'Route not found',
+      path: url.pathname 
+    }), {
+      status: 404,
+      headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+    });
   }
 };
 
