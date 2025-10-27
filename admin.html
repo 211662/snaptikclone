@@ -12,7 +12,7 @@
     <!-- TinyMCE Editor -->
     <script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
 </head>
-<body>
+<body class="protected-page">
     <!-- Admin Header -->
     <header class="admin-header">
         <div class="container">
@@ -24,6 +24,10 @@
                 <button class="nav-btn" data-section="posts">Manage Posts</button>
                 <button class="nav-btn" data-section="add-post">Add New Post</button>
                 <button class="nav-btn" data-section="settings">Settings</button>
+                <div class="nav-user">
+                    <span id="currentUser">Admin</span>
+                    <button class="logout-btn" onclick="logoutUser()">Logout</button>
+                </div>
                 <a href="/" class="nav-btn">← Back to Site</a>
             </nav>
         </div>
@@ -290,8 +294,39 @@
     </div>
 
     <!-- Scripts -->
+    <script src="js/login.js"></script>
     <script src="js/config.js"></script>
     <script src="js/blog-generator.js"></script>
     <script src="js/admin.js"></script>
+    <script>
+        // Authentication check
+        document.addEventListener('DOMContentLoaded', function() {
+            if (!LoginManager.isAuthenticated()) {
+                window.location.href = 'login.html';
+                return;
+            }
+            
+            // Display current user
+            const currentUser = LoginManager.getCurrentUser();
+            if (currentUser) {
+                document.getElementById('currentUser').textContent = currentUser;
+            }
+        });
+
+        // Logout function
+        function logoutUser() {
+            if (confirm('Are you sure you want to logout?')) {
+                LoginManager.logout();
+            }
+        }
+
+        // Session timeout check
+        setInterval(() => {
+            if (!LoginManager.isAuthenticated()) {
+                alert('Your session has expired. Please login again.');
+                window.location.href = 'login.html';
+            }
+        }, 60000); // Check every minute
+    </script>
 </body>
 </html>
