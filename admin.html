@@ -293,6 +293,27 @@
         <p>Loading Admin Panel...</p>
     </div>
     
+    <!-- Scripts -->
+    <script>
+        // Skip loading function - available immediately
+        function skipLoading() {
+            const adminLoading = document.getElementById('adminLoading');
+            if (adminLoading) {
+                adminLoading.style.display = 'none';
+            }
+            console.log('Loading skipped by user');
+        }
+        
+        // Emergency fallback - auto hide loading after 5 seconds
+        setTimeout(() => {
+            const adminLoading = document.getElementById('adminLoading');
+            if (adminLoading && adminLoading.style.display !== 'none') {
+                adminLoading.style.display = 'none';
+                console.log('Auto-hiding loading screen after timeout');
+            }
+        }, 5000);
+    </script>
+    
     <!-- Admin Initialization Loading -->
     <div id="adminLoading" class="admin-loading">
         <div class="loading-content">
@@ -302,59 +323,105 @@
         </div>
     </div>
 
-    <!-- Scripts -->
-    <script src="js/config.js"></script>
-    <script src="js/blog-generator.js"></script>
-    <script src="js/login.js"></script>
-    <script src="js/admin.js"></script>
+    <!-- Load scripts with error handling -->
     <script>
-        // Authentication check
-        document.addEventListener('DOMContentLoaded', function() {
-            console.log('DOM loaded, starting authentication check...');
-            
-            // Check if LoginManager is available
-            if (typeof LoginManager === 'undefined') {
-                console.error('LoginManager not found!');
-                alert('System error: Authentication module not loaded. Please refresh the page.');
+        // Load scripts one by one with error handling
+        const scripts = [
+            'js/config.js',
+            'js/blog-generator.js', 
+            'js/login.js',
+            'js/admin.js'
+        ];
+        
+        let scriptsLoaded = 0;
+        let totalScripts = scripts.length;
+        
+        function loadNextScript() {
+            if (scriptsLoaded >= totalScripts) {
+                initializeAdminSafely();
                 return;
             }
             
-            if (!LoginManager.isAuthenticated()) {
-                console.log('User not authenticated, redirecting to login...');
-                window.location.href = 'login.html';
-                return;
+            const script = document.createElement('script');
+            script.src = scripts[scriptsLoaded];
+            script.onload = function() {
+                console.log('Loaded:', scripts[scriptsLoaded]);
+                scriptsLoaded++;
+                loadNextScript();
+            };
+            script.onerror = function() {
+                console.error('Failed to load:', scripts[scriptsLoaded]);
+                scriptsLoaded++;
+                loadNextScript();
+            };
+            document.head.appendChild(script);
+        }
+        
+        function initializeAdminSafely() {
+            try {
+                console.log('All scripts loaded, initializing admin...');
+                
+                // Hide loading immediately if all scripts loaded
+                const adminLoading = document.getElementById('adminLoading');
+                if (adminLoading) {
+                    adminLoading.style.display = 'none';
+                }
+                
+                // Check authentication
+                if (typeof LoginManager !== 'undefined') {
+                    if (!LoginManager.isAuthenticated()) {
+                        console.log('User not authenticated, redirecting to login...');
+                        window.location.href = 'login.html';
+                        return;
+                    }
+                    
+                    // Display current user
+                    const currentUser = LoginManager.getCurrentUser();
+                    if (currentUser) {
+                        document.getElementById('currentUser').textContent = currentUser;
+                        console.log('Authenticated user:', currentUser);
+                    }
+                } else {
+                    console.warn('LoginManager not available - running in development mode');
+                    document.getElementById('currentUser').textContent = 'Admin (Dev Mode)';
+                }
+                
+            } catch (error) {
+                console.error('Admin initialization error:', error);
+                // Still hide loading screen
+                const adminLoading = document.getElementById('adminLoading');
+                if (adminLoading) {
+                    adminLoading.style.display = 'none';
+                }
             }
-            
-            // Display current user
-            const currentUser = LoginManager.getCurrentUser();
-            if (currentUser) {
-                document.getElementById('currentUser').textContent = currentUser;
-                console.log('Authenticated user:', currentUser);
-            }
-        });
+        }
 
         // Logout function
         function logoutUser() {
             if (confirm('Are you sure you want to logout?')) {
-                LoginManager.logout();
+                if (typeof LoginManager !== 'undefined') {
+                    LoginManager.logout();
+                } else {
+                    window.location.href = 'login.html';
+                }
             }
         }
 
-        // Session timeout check
-        setInterval(() => {
-            if (!LoginManager.isAuthenticated()) {
-                alert('Your session has expired. Please login again.');
-                window.location.href = 'login.html';
-            }
-        }, 60000); // Check every minute
-
-        // Skip loading function
-        function skipLoading() {
-            const adminLoading = document.getElementById('adminLoading');
-            if (adminLoading) {
-                adminLoading.style.display = 'none';
-            }
-            console.log('Loading skipped by user');
+        // Session timeout check (optional)
+        if (typeof LoginManager !== 'undefined') {
+            setInterval(() => {
+                if (!LoginManager.isAuthenticated()) {
+                    alert('Your session has expired. Please login again.');
+                    window.location.href = 'login.html';
+                }
+            }, 60000); // Check every minute
+        }
+        
+        // Start loading scripts when DOM is ready
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', loadNextScript);
+        } else {
+            loadNextScript();
         }
     </script>
 </body>
