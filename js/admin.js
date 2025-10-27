@@ -39,11 +39,37 @@ let nextPostId = 3;
 
 // Initialize admin panel
 document.addEventListener('DOMContentLoaded', function() {
-    initializeAdmin();
-    initializeTinyMCE();
-    loadPosts();
-    updateDashboardStats();
-    setupEventListeners();
+    console.log('Admin panel initializing...');
+    
+    // Hide initial loading after a short delay
+    setTimeout(() => {
+        const adminLoading = document.getElementById('adminLoading');
+        if (adminLoading) {
+            adminLoading.classList.add('fade-out');
+            setTimeout(() => {
+                adminLoading.style.display = 'none';
+            }, 500);
+        }
+    }, 1500);
+    
+    // Add small delay to ensure all resources are loaded
+    setTimeout(() => {
+        try {
+            initializeAdmin();
+            loadPosts();
+            updateDashboardStats();
+            setupEventListeners();
+            
+            console.log('Admin panel initialized successfully');
+        } catch (error) {
+            console.error('Admin initialization error:', error);
+            // Hide loading even if there's an error
+            const adminLoading = document.getElementById('adminLoading');
+            if (adminLoading) {
+                adminLoading.style.display = 'none';
+            }
+        }
+    }, 800);
 });
 
 function initializeAdmin() {
@@ -102,227 +128,130 @@ function setupEventListeners() {
 }
 
 function initializeTinyMCE() {
-    tinymce.init({
-        selector: '#postContent',
-        height: 600,
-        menubar: 'file edit view insert format tools table help',
-        plugins: [
-            'advlist', 'autolink', 'lists', 'link', 'image', 'charmap', 'preview',
-            'anchor', 'searchreplace', 'visualblocks', 'code', 'fullscreen',
-            'insertdatetime', 'media', 'table', 'help', 'wordcount', 'emoticons',
-            'template', 'codesample', 'hr', 'pagebreak', 'nonbreaking', 'toc',
-            'quickbars', 'accordion'
-        ],
-        toolbar1: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | forecolor backcolor',
-        toolbar2: 'alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | blockquote hr pagebreak',
-        toolbar3: 'link image media table emoticons charmap | insertdatetime | code codesample | fullscreen preview | help',
-        
-        // Enhanced formatting options
-        block_formats: 'Paragraph=p; Heading 1=h1; Heading 2=h2; Heading 3=h3; Heading 4=h4; Heading 5=h5; Heading 6=h6; Preformatted=pre; Quote=blockquote',
-        
-        font_family_formats: 'Arial=arial,helvetica,sans-serif; Courier New=courier new,courier,monospace; AkrutiKndPadmini=Akpdmi-n; Georgia=georgia,palatino; Helvetica=helvetica; Impact=impact,chicago; Tahoma=tahoma,arial,helvetica,sans-serif; Times New Roman=times new roman,times; Verdana=verdana,geneva',
-        
-        font_size_formats: '8pt 10pt 12pt 14pt 16pt 18pt 24pt 36pt 48pt',
-        
-        // Content styling
-        content_style: `
-            body { 
-                font-family: -apple-system, BlinkMacSystemFont, San Francisco, Segoe UI, Roboto, Helvetica Neue, sans-serif; 
-                font-size: 14px; 
-                line-height: 1.6;
-                max-width: 800px;
-                margin: 0 auto;
-                padding: 20px;
-            }
-            h1, h2, h3, h4, h5, h6 { 
-                color: #333; 
-                margin-top: 1.5em; 
-                margin-bottom: 0.5em; 
-            }
-            p { margin-bottom: 1em; }
-            blockquote { 
-                border-left: 4px solid #ddd; 
-                margin-left: 0; 
-                padding-left: 1em; 
-                color: #666; 
-                font-style: italic; 
-            }
-            code { 
-                background-color: #f4f4f4; 
-                padding: 2px 4px; 
-                border-radius: 3px; 
-                font-family: Consolas, Monaco, 'Courier New', monospace; 
-            }
-            pre { 
-                background-color: #f4f4f4; 
-                padding: 1em; 
-                border-radius: 5px; 
-                overflow-x: auto; 
-            }
-            img { 
-                max-width: 100%; 
-                height: auto; 
-                border-radius: 5px; 
-                box-shadow: 0 2px 10px rgba(0,0,0,0.1); 
-            }
-            table { 
-                border-collapse: collapse; 
-                width: 100%; 
-                margin: 1em 0; 
-            }
-            table th, table td { 
-                border: 1px solid #ddd; 
-                padding: 8px 12px; 
-                text-align: left; 
-            }
-            table th { 
-                background-color: #f8f9fa; 
-                font-weight: 600; 
-            }
-        `,
-        
-        // Image handling
-        image_advtab: true,
-        image_caption: true,
-        image_description: true,
-        image_dimensions: true,
-        image_title: true,
-        
-        // Link handling
-        link_assume_external_targets: true,
-        link_context_toolbar: true,
-        
-        // Table options
-        table_default_attributes: {
-            'class': 'table table-striped'
-        },
-        table_class_list: [
-            {title: 'Default', value: 'table'},
-            {title: 'Striped', value: 'table table-striped'},
-            {title: 'Bordered', value: 'table table-bordered'},
-            {title: 'Responsive', value: 'table table-responsive'}
-        ],
-        
-        // Code sample languages
-        codesample_languages: [
-            {text: 'HTML/XML', value: 'markup'},
-            {text: 'JavaScript', value: 'javascript'},
-            {text: 'CSS', value: 'css'},
-            {text: 'PHP', value: 'php'},
-            {text: 'Ruby', value: 'ruby'},
-            {text: 'Python', value: 'python'},
-            {text: 'Java', value: 'java'},
-            {text: 'C', value: 'c'},
-            {text: 'C#', value: 'csharp'},
-            {text: 'C++', value: 'cpp'},
-            {text: 'SQL', value: 'sql'},
-            {text: 'JSON', value: 'json'}
-        ],
-        
-        // Templates
-        templates: [
-            {
-                title: 'Blog Post Template',
-                description: 'Standard blog post structure',
-                content: `
-                    <h1>Blog Post Title</h1>
-                    <p><em>Published on [Date] by [Author]</em></p>
-                    
-                    <h2>Introduction</h2>
-                    <p>Start your blog post with an engaging introduction that hooks your readers...</p>
-                    
-                    <h2>Main Content</h2>
-                    <p>Your main content goes here. Use headings to structure your post...</p>
-                    
-                    <blockquote>
-                        <p>"Add relevant quotes or highlights here to make your content more engaging."</p>
-                    </blockquote>
-                    
-                    <h2>Conclusion</h2>
-                    <p>Wrap up your post with a strong conclusion and call-to-action...</p>
-                `
-            },
-            {
-                title: 'Tutorial Template',
-                description: 'Step-by-step tutorial structure',
-                content: `
-                    <h1>How to [Task/Goal]</h1>
-                    <p><strong>Difficulty:</strong> Beginner/Intermediate/Advanced</p>
-                    <p><strong>Time Required:</strong> X minutes</p>
-                    
-                    <h2>What You'll Need</h2>
-                    <ul>
-                        <li>Requirement 1</li>
-                        <li>Requirement 2</li>
-                        <li>Requirement 3</li>
-                    </ul>
-                    
-                    <h2>Step 1: [First Step]</h2>
-                    <p>Detailed explanation of the first step...</p>
-                    
-                    <h2>Step 2: [Second Step]</h2>
-                    <p>Detailed explanation of the second step...</p>
-                    
-                    <h2>Conclusion</h2>
-                    <p>Summary and next steps...</p>
-                `
-            }
-        ],
-        
-        // Advanced options
-        quickbars_selection_toolbar: 'bold italic | quicklink h2 h3 blockquote quickimage quicktable',
-        quickbars_insert_toolbar: 'quickimage quicktable | hr pagebreak',
-        contextmenu: 'link image table | copy paste | selectall',
-        
-        // Auto-save
-        autosave_ask_before_unload: true,
-        autosave_interval: '30s',
-        autosave_prefix: 'tinymce-autosave-{path}{query}-{id}-',
-        autosave_restore_when_empty: false,
-        autosave_retention: '2m',
-        
-        // Accessibility
-        a11y_advanced_options: true,
-        
-        // Spell checking
-        browser_spellcheck: true,
-        
-        // Character count
-        wordcount_countregex: /[\w\u2019\x27\-\u00C0-\u1FFF]+/g,
-        
-        setup: function(editor) {
-            editor.on('change', function() {
-                editor.save();
-            });
+    // Check if TinyMCE is already initialized
+    if (typeof tinymce !== 'undefined' && tinymce.get('postContent')) {
+        console.log('TinyMCE already initialized');
+        return;
+    }
+
+    // Wait for TinyMCE to be available
+    if (typeof tinymce === 'undefined') {
+        console.log('TinyMCE not loaded yet, retrying...');
+        setTimeout(initializeTinyMCE, 1000);
+        return;
+    }
+
+    try {
+        tinymce.init({
+            selector: '#postContent',
+            height: 600,
+            menubar: 'file edit view insert format tools table help',
+            plugins: [
+                'advlist', 'autolink', 'lists', 'link', 'image', 'charmap', 'preview',
+                'anchor', 'searchreplace', 'visualblocks', 'code', 'fullscreen',
+                'insertdatetime', 'media', 'table', 'help', 'wordcount', 'emoticons',
+                'template', 'codesample', 'hr', 'pagebreak', 'nonbreaking', 'toc',
+                'quickbars', 'accordion'
+            ],
+            toolbar1: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | forecolor backcolor',
+            toolbar2: 'alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | blockquote hr pagebreak',
+            toolbar3: 'link image media table emoticons charmap | insertdatetime | code codesample | fullscreen preview | help',
             
-            // Custom button for inserting current date
-            editor.ui.registry.addButton('insertdate', {
-                text: 'Date',
-                tooltip: 'Insert current date',
-                onAction: function() {
-                    const now = new Date();
-                    const dateString = now.toLocaleDateString('en-US', {
-                        year: 'numeric',
-                        month: 'long',
-                        day: 'numeric'
-                    });
-                    editor.insertContent(dateString);
+            // Enhanced formatting options
+            block_formats: 'Paragraph=p; Heading 1=h1; Heading 2=h2; Heading 3=h3; Heading 4=h4; Heading 5=h5; Heading 6=h6; Preformatted=pre; Quote=blockquote',
+            
+            font_family_formats: 'Arial=arial,helvetica,sans-serif; Courier New=courier new,courier,monospace; AkrutiKndPadmini=Akpdmi-n; Georgia=georgia,palatino; Helvetica=helvetica; Impact=impact,chicago; Tahoma=tahoma,arial,helvetica,sans-serif; Times New Roman=times new roman,times; Verdana=verdana,geneva',
+            
+            font_size_formats: '8pt 10pt 12pt 14pt 16pt 18pt 24pt 36pt 48pt',
+            
+            // Simplified content styling
+            content_style: `
+                body { 
+                    font-family: -apple-system, BlinkMacSystemFont, San Francisco, Segoe UI, Roboto, Helvetica Neue, sans-serif; 
+                    font-size: 14px; 
+                    line-height: 1.6;
+                    max-width: 800px;
+                    margin: 0 auto;
+                    padding: 20px;
                 }
-            });
-            
-            // Custom button for inserting read more separator
-            editor.ui.registry.addButton('readmore', {
-                text: 'Read More',
-                tooltip: 'Insert read more separator',
-                onAction: function() {
-                    editor.insertContent('<hr class="read-more-separator" /><p>&nbsp;</p>');
+                h1, h2, h3, h4, h5, h6 { 
+                    color: #333; 
+                    margin-top: 1.5em; 
+                    margin-bottom: 0.5em; 
                 }
-            });
+                p { margin-bottom: 1em; }
+                blockquote { 
+                    border-left: 4px solid #ddd; 
+                    margin-left: 0; 
+                    padding-left: 1em; 
+                    color: #666; 
+                    font-style: italic; 
+                }
+                code { 
+                    background-color: #f4f4f4; 
+                    padding: 2px 4px; 
+                    border-radius: 3px; 
+                    font-family: Consolas, Monaco, 'Courier New', monospace; 
+                }
+                img { 
+                    max-width: 100%; 
+                    height: auto; 
+                    border-radius: 5px; 
+                }
+                table { 
+                    border-collapse: collapse; 
+                    width: 100%; 
+                    margin: 1em 0; 
+                }
+                table th, table td { 
+                    border: 1px solid #ddd; 
+                    padding: 8px 12px; 
+                    text-align: left; 
+                }
+                table th { 
+                    background-color: #f8f9fa; 
+                    font-weight: 600; 
+                }
+            `,
             
-            // Add custom buttons to toolbar
-            editor.settings.toolbar3 += ' | insertdate readmore';
-        }
-    });
+            // Basic settings to avoid loading issues
+            promotion: false,
+            branding: false,
+            resize: false,
+            elementpath: false,
+            statusbar: false,
+            
+            setup: function(editor) {
+                editor.on('init', function() {
+                    console.log('TinyMCE initialized successfully');
+                });
+                
+                editor.on('change', function() {
+                    editor.save();
+                });
+                
+                // Custom button for inserting current date
+                editor.ui.registry.addButton('insertdate', {
+                    text: 'Date',
+                    tooltip: 'Insert current date',
+                    onAction: function() {
+                        const now = new Date();
+                        const dateString = now.toLocaleDateString('en-US', {
+                            year: 'numeric',
+                            month: 'long',
+                            day: 'numeric'
+                        });
+                        editor.insertContent(dateString);
+                    }
+                });
+                
+                // Add custom buttons to toolbar
+                editor.settings.toolbar3 += ' | insertdate';
+            }
+        });
+    } catch (error) {
+        console.error('TinyMCE initialization error:', error);
+    }
 }
 
 function showSection(sectionId) {
@@ -339,6 +268,13 @@ function showSection(sectionId) {
         loadPosts();
     } else if (sectionId === 'dashboard') {
         updateDashboardStats();
+    } else if (sectionId === 'add-post') {
+        // Initialize TinyMCE when Add New Post section is shown
+        setTimeout(() => {
+            if (!tinymce.get('postContent')) {
+                initializeTinyMCE();
+            }
+        }, 100);
     }
 }
 

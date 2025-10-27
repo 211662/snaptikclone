@@ -138,13 +138,8 @@ class LoginManager {
         // In production, this should make an API call to verify credentials
         const validUsernames = ['admin', 'administrator', 'blogger'];
         
-        console.log('Validating credentials:', { username, password });
-        console.log('Valid passwords:', this.validPasswords);
-        
         const usernameValid = validUsernames.includes(username.toLowerCase());
         const passwordValid = this.validPasswords.includes(password);
-        
-        console.log('Results:', { usernameValid, passwordValid });
         
         return usernameValid && passwordValid;
     }
@@ -242,8 +237,6 @@ class LoginManager {
         const lockoutTime = localStorage.getItem('lockoutTime');
         const attempts = localStorage.getItem('loginAttempts');
         
-        console.log('Checking lockout status:', { lockoutTime, attempts });
-        
         if (this.isLockedOut()) {
             const lockoutTimestamp = parseInt(localStorage.getItem('lockoutTime'));
             const remaining = Math.ceil((lockoutTimestamp + this.lockoutTime - Date.now()) / 60000);
@@ -258,7 +251,6 @@ class LoginManager {
                 this.hideError();
                 localStorage.removeItem('lockoutTime');
                 localStorage.removeItem('loginAttempts');
-                console.log('Lockout cleared automatically');
             }, lockoutTimestamp + this.lockoutTime - Date.now());
         }
     }
