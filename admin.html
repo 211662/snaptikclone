@@ -1350,6 +1350,11 @@
         
         function logoutUser() {
             if (confirm('Are you sure you want to logout?')) {
+                // Clear authentication data (both localStorage and sessionStorage)
+                localStorage.removeItem('adminSession');
+                sessionStorage.removeItem('adminSession');
+                
+                console.log('User logged out, redirecting to login...');
                 window.location.href = 'login.html';
             }
         }
@@ -1400,6 +1405,27 @@
         // Auto-generate slug from title
         document.addEventListener('DOMContentLoaded', function() {
             console.log('Admin panel initializing...');
+            
+            // AUTHENTICATION CHECK - REQUIRED!
+            const sessionData = getSessionData();
+            
+            // Check if user is authenticated and session is still valid
+            if (!sessionData || !isSessionValid(sessionData)) {
+                console.log('User not authenticated or session expired, redirecting to login...');
+                // Clear expired authentication
+                localStorage.removeItem('adminSession');
+                sessionStorage.removeItem('adminSession');
+                window.location.href = 'login.html';
+                return;
+            }
+            
+            console.log('User authenticated:', sessionData.user);
+            
+            // Update current user display
+            const currentUserElement = document.getElementById('currentUser');
+            if (currentUserElement) {
+                currentUserElement.textContent = sessionData.user || 'Admin';
+            }
             
             // Test functions availability
             console.log('Functions available:', {
@@ -1454,6 +1480,28 @@
             console.log('Admin panel initialized successfully');
             console.log('Posts loaded:', posts.length);
         });
+        
+        // Session management functions
+        function getSessionData() {
+            const localSession = localStorage.getItem('adminSession');
+            const sessionSession = sessionStorage.getItem('adminSession');
+            
+            if (localSession) {
+                return JSON.parse(localSession);
+            } else if (sessionSession) {
+                return JSON.parse(sessionSession);
+            }
+            
+            return null;
+        }
+        
+        function isSessionValid(sessionData) {
+            if (!sessionData || !sessionData.loginTime) return false;
+            
+            const sessionTimeout = 2 * 60 * 60 * 1000; // 2 hours
+            const sessionAge = Date.now() - sessionData.loginTime;
+            return sessionAge < sessionTimeout;
+        }
         
         // Add keyframes for animation
         const style = document.createElement('style');
