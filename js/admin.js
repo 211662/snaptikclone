@@ -1,7 +1,11 @@
 // Admin JavaScript functionality
 
+// Global variables
+let posts = [];
+let nextPostId = 7;
+
 // Sample data structure for posts
-let posts = [
+const defaultPosts = [
     {
         id: 1,
         title: "SnapTik: The Best No-Watermark TikTok Video Downloader",
@@ -31,11 +35,73 @@ let posts = [
         metaKeywords: "tiktok trends, viral challenges, october 2025",
         date: "2025-10-26",
         author: "Admin"
+    },
+    {
+        id: 3,
+        title: "How to Download TikTok Videos Without Watermark in 2025",
+        slug: "how-to-download-tiktok-videos-without-watermark-2025",
+        category: "tutorial",
+        status: "published",
+        excerpt: "Complete step-by-step guide to downloading TikTok videos without watermarks using SnapTik.",
+        content: "Tutorial content...",
+        image: "https://via.placeholder.com/400x250/ff6b6b/ffffff?text=Tutorial",
+        tags: ["Tutorial", "Download", "TikTok"],
+        metaDescription: "Learn how to download TikTok videos without watermarks in 2025.",
+        metaKeywords: "download tiktok, no watermark, tutorial",
+        date: "2025-10-25",
+        author: "Admin"
+    },
+    {
+        id: 4,
+        title: "TikTok Video Quality Comparison: Original vs Downloaded",
+        slug: "tiktok-video-quality-comparison",
+        category: "comparison",
+        status: "published",
+        excerpt: "Analyzing the quality differences between original TikTok videos and downloaded versions.",
+        content: "Comparison content...",
+        image: "https://via.placeholder.com/400x250/4ecdc4/ffffff?text=Quality+Test",
+        tags: ["Quality", "Comparison", "Analysis"],
+        metaDescription: "Compare TikTok video quality: original vs downloaded versions.",
+        metaKeywords: "tiktok quality, video comparison, download quality",
+        date: "2025-10-24",
+        author: "Admin"
+    },
+    {
+        id: 5,
+        title: "Best Practices for TikTok Content Creation",
+        slug: "best-practices-tiktok-content-creation",
+        category: "tips",
+        status: "published",
+        excerpt: "Essential tips and tricks for creating engaging TikTok content that goes viral.",
+        content: "Tips content...",
+        image: "https://via.placeholder.com/400x250/ffd93d/ffffff?text=Content+Tips",
+        tags: ["Content Creation", "Tips", "Viral"],
+        metaDescription: "Learn the best practices for creating viral TikTok content.",
+        metaKeywords: "tiktok content, viral videos, content creation",
+        date: "2025-10-23",
+        author: "Admin"
+    },
+    {
+        id: 6,
+        title: "Understanding TikTok's Algorithm in 2025",
+        slug: "understanding-tiktok-algorithm-2025",
+        category: "algorithm",
+        status: "published",
+        excerpt: "Deep dive into how TikTok's algorithm works and how to optimize your content for better reach.",
+        content: "Algorithm content...",
+        image: "https://via.placeholder.com/400x250/ff6b6b/ffffff?text=Algorithm",
+        tags: ["Algorithm", "TikTok", "2025"],
+        metaDescription: "Understand how TikTok's algorithm works in 2025.",
+        metaKeywords: "tiktok algorithm, content optimization, reach",
+        date: "2025-10-22",
+        author: "Admin"
     }
 ];
 
+// Initialize posts with default data
+posts = [...defaultPosts];
+
 let currentEditingPost = null;
-let nextPostId = 3;
 
 // Initialize admin panel
 document.addEventListener('DOMContentLoaded', function() {

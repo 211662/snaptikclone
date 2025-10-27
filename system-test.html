@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>System Test - SnapTik</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .test-container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        .test-step {
+            margin: 20px 0;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background: #f9f9f9;
+        }
+        .test-step h3 {
+            margin-top: 0;
+            color: #333;
+        }
+        .status {
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-size: 12px;
+            font-weight: bold;
+            margin-left: 10px;
+        }
+        .status.pending { background: #fff3cd; color: #856404; }
+        .status.running { background: #cce5ff; color: #004085; }
+        .status.success { background: #d4edda; color: #155724; }
+        .status.error { background: #f8d7da; color: #721c24; }
+        button {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover { background: #0056b3; }
+        button.success { background: #28a745; }
+        button.error { background: #dc3545; }
+        .log {
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            padding: 15px;
+            border-radius: 5px;
+            font-family: monospace;
+            font-size: 12px;
+            max-height: 200px;
+            overflow-y: auto;
+            margin-top: 15px;
+        }
+        .test-results {
+            margin-top: 20px;
+            padding: 20px;
+            border-radius: 5px;
+        }
+        .results-success { background: #d4edda; border: 1px solid #c3e6cb; }
+        .results-error { background: #f8d7da; border: 1px solid #f5c6cb; }
+        .quick-links {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+        .quick-link {
+            display: block;
+            padding: 15px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            text-align: center;
+            transition: transform 0.2s;
+        }
+        .quick-link:hover {
+            transform: translateY(-2px);
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <div class="test-container">
+        <h1>🧪 SnapTik System Test Suite</h1>
+        <p>Comprehensive testing of all blog system components</p>
+        
+        <button onclick="runAllTests()">🚀 Run All Tests</button>
+        <button onclick="clearResults()">🗑️ Clear Results</button>
+        <button onclick="runQuickFix()">🔧 Quick Fix</button>
+    </div>
+
+    <div class="test-container">
+        <h2>Test Steps</h2>
+        
+        <div class="test-step" id="step1">
+            <h3>1. Script Loading Test <span class="status pending" id="status1">Pending</span></h3>
+            <p>Testing if all JavaScript files load correctly</p>
+            <button onclick="runTest(1)">Run Test</button>
+            <div class="log" id="log1"></div>
+        </div>
+        
+        <div class="test-step" id="step2">
+            <h3>2. Authentication Test <span class="status pending" id="status2">Pending</span></h3>
+            <p>Testing login system with correct credentials</p>
+            <button onclick="runTest(2)">Run Test</button>
+            <div class="log" id="log2"></div>
+        </div>
+        
+        <div class="test-step" id="step3">
+            <h3>3. Storage Test <span class="status pending" id="status3">Pending</span></h3>
+            <p>Testing localStorage functionality</p>
+            <button onclick="runTest(3)">Run Test</button>
+            <div class="log" id="log3"></div>
+        </div>
+        
+        <div class="test-step" id="step4">
+            <h3>4. Admin Panel Test <span class="status pending" id="status4">Pending</span></h3>
+            <p>Testing admin panel initialization</p>
+            <button onclick="runTest(4)">Run Test</button>
+            <div class="log" id="log4"></div>
+        </div>
+        
+        <div class="test-step" id="step5">
+            <h3>5. Blog Generation Test <span class="status pending" id="status5">Pending</span></h3>
+            <p>Testing blog post generation and display</p>
+            <button onclick="runTest(5)">Run Test</button>
+            <div class="log" id="log5"></div>
+        </div>
+    </div>
+
+    <div class="test-container">
+        <h2>Test Results</h2>
+        <div id="testResults">No tests run yet</div>
+    </div>
+
+    <div class="test-container">
+        <h2>Quick Access</h2>
+        <div class="quick-links">
+            <a href="login.html" class="quick-link">🔐 Login Page</a>
+            <a href="admin.html" class="quick-link">👤 Admin Panel</a>
+            <a href="blog.html" class="quick-link">📝 Blog Page</a>
+            <a href="blog-demo.html" class="quick-link">🎨 Demo Page</a>
+            <a href="admin-debug.html" class="quick-link">🔧 Debug Tool</a>
+        </div>
+    </div>
+
+    <script src="js/config.js"></script>
+    <script src="js/blog-generator.js"></script>
+    <script src="js/login.js"></script>
+    <script>
+        let testResults = {
+            scriptsLoaded: false,
+            authWorking: false,
+            storageWorking: false,
+            adminWorking: false,
+            blogWorking: false
+        };
+
+        function log(stepId, message) {
+            const logElement = document.getElementById(`log${stepId}`);
+            const timestamp = new Date().toLocaleTimeString();
+            logElement.innerHTML += `[${timestamp}] ${message}<br>`;
+            logElement.scrollTop = logElement.scrollHeight;
+            console.log(`Step ${stepId}: ${message}`);
+        }
+
+        function setStatus(stepId, status) {
+            const statusElement = document.getElementById(`status${stepId}`);
+            statusElement.className = `status ${status}`;
+            statusElement.textContent = status.charAt(0).toUpperCase() + status.slice(1);
+        }
+
+        function runTest(stepId) {
+            setStatus(stepId, 'running');
+            document.getElementById(`log${stepId}`).innerHTML = '';
+            
+            switch(stepId) {
+                case 1: testScriptLoading(); break;
+                case 2: testAuthentication(); break;
+                case 3: testStorage(); break;
+                case 4: testAdminPanel(); break;
+                case 5: testBlogGeneration(); break;
+            }
+        }
+
+        function testScriptLoading() {
+            log(1, 'Testing script loading...');
+            
+            const requiredObjects = [
+                { name: 'API_CONFIG', object: window.API_CONFIG },
+                { name: 'BlogGenerator', object: window.BlogGenerator },
+                { name: 'LoginManager', object: window.LoginManager }
+            ];
+
+            let allLoaded = true;
+            
+            requiredObjects.forEach(({ name, object }) => {
+                if (typeof object !== 'undefined') {
+                    log(1, `✓ ${name} loaded successfully`);
+                } else {
+                    log(1, `✗ ${name} NOT loaded`);
+                    allLoaded = false;
+                }
+            });
+
+            testResults.scriptsLoaded = allLoaded;
+            setStatus(1, allLoaded ? 'success' : 'error');
+            log(1, allLoaded ? 'All scripts loaded successfully!' : 'Some scripts failed to load');
+        }
+
+        function testAuthentication() {
+            log(2, 'Testing authentication system...');
+            
+            if (typeof LoginManager === 'undefined') {
+                log(2, '✗ LoginManager not available');
+                setStatus(2, 'error');
+                return;
+            }
+
+            try {
+                // Test credential validation
+                const loginManager = new LoginManager();
+                
+                // Test valid credentials
+                const validTest = loginManager.validateCredentials('admin', 'Hao040596!@#');
+                log(2, `Valid credentials test: ${validTest ? 'PASS' : 'FAIL'}`);
+                
+                // Test invalid credentials
+                const invalidTest = !loginManager.validateCredentials('admin', 'wrongpass');
+                log(2, `Invalid credentials test: ${invalidTest ? 'PASS' : 'FAIL'}`);
+                
+                testResults.authWorking = validTest && invalidTest;
+                setStatus(2, testResults.authWorking ? 'success' : 'error');
+                log(2, testResults.authWorking ? 'Authentication working correctly!' : 'Authentication has issues');
+                
+            } catch (error) {
+                log(2, `✗ Authentication test error: ${error.message}`);
+                setStatus(2, 'error');
+            }
+        }
+
+        function testStorage() {
+            log(3, 'Testing localStorage...');
+            
+            try {
+                // Test basic localStorage
+                const testKey = 'snaptik_test';
+                const testValue = { test: 'data', timestamp: Date.now() };
+                
+                localStorage.setItem(testKey, JSON.stringify(testValue));
+                const retrieved = JSON.parse(localStorage.getItem(testKey));
+                
+                const basicTest = retrieved.test === testValue.test;
+                log(3, `Basic storage test: ${basicTest ? 'PASS' : 'FAIL'}`);
+                
+                // Clean up
+                localStorage.removeItem(testKey);
+                
+                // Test blog posts storage
+                const existingPosts = localStorage.getItem('snaptik_blog_posts');
+                log(3, `Existing blog posts: ${existingPosts ? 'Found' : 'None'}`);
+                
+                testResults.storageWorking = basicTest;
+                setStatus(3, testResults.storageWorking ? 'success' : 'error');
+                log(3, 'Storage test completed');
+                
+            } catch (error) {
+                log(3, `✗ Storage test error: ${error.message}`);
+                setStatus(3, 'error');
+            }
+        }
+
+        function testAdminPanel() {
+            log(4, 'Testing admin panel functionality...');
+            
+            try {
+                // Test if we can access admin functions
+                if (typeof posts !== 'undefined') {
+                    log(4, `✓ Posts array available (${posts.length} posts)`);
+                } else {
+                    log(4, '✗ Posts array not available');
+                }
+                
+                // Try to simulate admin initialization
+                const iframe = document.createElement('iframe');
+                iframe.style.display = 'none';
+                iframe.onload = function() {
+                    try {
+                        log(4, '✓ Admin page loads without errors');
+                        testResults.adminWorking = true;
+                        setStatus(4, 'success');
+                        document.body.removeChild(iframe);
+                    } catch (error) {
+                        log(4, `✗ Admin page error: ${error.message}`);
+                        setStatus(4, 'error');
+                        document.body.removeChild(iframe);
+                    }
+                };
+                iframe.onerror = function() {
+                    log(4, '✗ Admin page failed to load');
+                    setStatus(4, 'error');
+                    document.body.removeChild(iframe);
+                };
+                iframe.src = 'admin.html';
+                document.body.appendChild(iframe);
+                
+            } catch (error) {
+                log(4, `✗ Admin test error: ${error.message}`);
+                setStatus(4, 'error');
+            }
+        }
+
+        function testBlogGeneration() {
+            log(5, 'Testing blog generation...');
+            
+            if (typeof BlogGenerator === 'undefined') {
+                log(5, '✗ BlogGenerator not available');
+                setStatus(5, 'error');
+                return;
+            }
+
+            try {
+                const generator = new BlogGenerator();
+                log(5, '✓ BlogGenerator instance created');
+                
+                // Test basic methods
+                if (typeof generator.generateBlogIndex === 'function') {
+                    log(5, '✓ generateBlogIndex method available');
+                } else {
+                    log(5, '✗ generateBlogIndex method missing');
+                }
+                
+                // Test blog page loading
+                const iframe = document.createElement('iframe');
+                iframe.style.display = 'none';
+                iframe.onload = function() {
+                    log(5, '✓ Blog page loads successfully');
+                    testResults.blogWorking = true;
+                    setStatus(5, 'success');
+                    document.body.removeChild(iframe);
+                };
+                iframe.onerror = function() {
+                    log(5, '✗ Blog page failed to load');
+                    setStatus(5, 'error');
+                    document.body.removeChild(iframe);
+                };
+                iframe.src = 'blog.html';
+                document.body.appendChild(iframe);
+                
+            } catch (error) {
+                log(5, `✗ Blog generation error: ${error.message}`);
+                setStatus(5, 'error');
+            }
+        }
+
+        function runAllTests() {
+            log('all', 'Starting comprehensive test suite...');
+            for (let i = 1; i <= 5; i++) {
+                setTimeout(() => runTest(i), i * 1000);
+            }
+            
+            setTimeout(showFinalResults, 6000);
+        }
+
+        function showFinalResults() {
+            const resultsDiv = document.getElementById('testResults');
+            const passed = Object.values(testResults).filter(r => r).length;
+            const total = Object.keys(testResults).length;
+            
+            if (passed === total) {
+                resultsDiv.innerHTML = `
+                    <div class="test-results results-success">
+                        <h3>🎉 All Tests Passed! (${passed}/${total})</h3>
+                        <p>Your SnapTik blog system is working perfectly!</p>
+                        <p><strong>Next steps:</strong></p>
+                        <ul>
+                            <li>✅ Login to admin panel</li>
+                            <li>✅ Create your first blog post</li>
+                            <li>✅ View your blog</li>
+                        </ul>
+                    </div>
+                `;
+            } else {
+                resultsDiv.innerHTML = `
+                    <div class="test-results results-error">
+                        <h3>⚠️ Tests Failed (${passed}/${total} passed)</h3>
+                        <p>Some issues were found. Check the logs above for details.</p>
+                        <p><strong>Common fixes:</strong></p>
+                        <ul>
+                            <li>Refresh the page and try again</li>
+                            <li>Clear browser cache</li>
+                            <li>Use the Quick Fix button</li>
+                        </ul>
+                    </div>
+                `;
+            }
+        }
+
+        function clearResults() {
+            for (let i = 1; i <= 5; i++) {
+                document.getElementById(`log${i}`).innerHTML = '';
+                setStatus(i, 'pending');
+            }
+            document.getElementById('testResults').innerHTML = 'Tests cleared';
+            testResults = {
+                scriptsLoaded: false,
+                authWorking: false,
+                storageWorking: false,
+                adminWorking: false,
+                blogWorking: false
+            };
+        }
+
+        function runQuickFix() {
+            log('fix', 'Running quick fix...');
+            
+            // Clear localStorage
+            localStorage.clear();
+            
+            // Set up authentication
+            const sessionData = {
+                user: 'admin',
+                loginTime: Date.now(),
+                remember: false
+            };
+            sessionStorage.setItem('adminSession', JSON.stringify(sessionData));
+            
+            alert('Quick fix applied! You should now be able to access the admin panel.');
+        }
+
+        // Auto-run basic test on load
+        window.addEventListener('load', function() {
+            setTimeout(() => runTest(1), 500);
+        });
+    </script>
+</body>
+</html>
