@@ -63,6 +63,7 @@
                     Password: <code id="passwordDisplay">Hao040596!@#</code>
                     <button type="button" class="copy-btn" onclick="copyPassword()">📋</button>
                 </p>
+                <button type="button" class="reset-btn" onclick="resetLoginAttempts()">🔄 Reset Login</button>
                 <a href="/" class="back-link">← Back to Website</a>
             </div>
         </div>
@@ -155,6 +156,28 @@
                 usernameInput.value = 'admin';
             }
         });
+
+        // Reset login attempts function
+        function resetLoginAttempts() {
+            localStorage.removeItem('lockoutTime');
+            localStorage.removeItem('loginAttempts');
+            localStorage.removeItem('lastAttempt');
+            
+            // Re-enable form
+            const inputs = document.querySelectorAll('#loginForm input, #loginForm button');
+            inputs.forEach(input => {
+                input.disabled = false;
+            });
+            
+            // Hide error messages
+            const errorDiv = document.querySelector('.login-error');
+            if (errorDiv) {
+                errorDiv.classList.add('hidden');
+            }
+            
+            console.log('Login attempts reset');
+            alert('Login attempts have been reset. You can try again now.');
+        }
     </script>
 </body>
 </html>

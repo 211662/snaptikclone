@@ -138,8 +138,13 @@ class LoginManager {
         // In production, this should make an API call to verify credentials
         const validUsernames = ['admin', 'administrator', 'blogger'];
         
+        console.log('Validating credentials:', { username, password });
+        console.log('Valid passwords:', this.validPasswords);
+        
         const usernameValid = validUsernames.includes(username.toLowerCase());
         const passwordValid = this.validPasswords.includes(password);
+        
+        console.log('Results:', { usernameValid, passwordValid });
         
         return usernameValid && passwordValid;
     }
@@ -233,9 +238,15 @@ class LoginManager {
     }
 
     checkLockoutStatus() {
+        // Clear any old lockout data first
+        const lockoutTime = localStorage.getItem('lockoutTime');
+        const attempts = localStorage.getItem('loginAttempts');
+        
+        console.log('Checking lockout status:', { lockoutTime, attempts });
+        
         if (this.isLockedOut()) {
-            const lockoutTime = parseInt(localStorage.getItem('lockoutTime'));
-            const remaining = Math.ceil((lockoutTime + this.lockoutTime - Date.now()) / 60000);
+            const lockoutTimestamp = parseInt(localStorage.getItem('lockoutTime'));
+            const remaining = Math.ceil((lockoutTimestamp + this.lockoutTime - Date.now()) / 60000);
             this.showError(`Account is locked. Please try again in ${remaining} minute${remaining !== 1 ? 's' : ''}.`);
             
             // Disable form
@@ -247,7 +258,8 @@ class LoginManager {
                 this.hideError();
                 localStorage.removeItem('lockoutTime');
                 localStorage.removeItem('loginAttempts');
-            }, lockoutTime + this.lockoutTime - Date.now());
+                console.log('Lockout cleared automatically');
+            }, lockoutTimestamp + this.lockoutTime - Date.now());
         }
     }
 
