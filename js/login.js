@@ -5,7 +5,7 @@ class LoginManager {
         this.maxAttempts = 3;
         this.lockoutTime = 5 * 60 * 1000; // 5 minutes
         this.sessionTimeout = 2 * 60 * 60 * 1000; // 2 hours
-        this.defaultPassword = 'admin123'; // In production, this should be encrypted and stored securely
+        this.validPasswords = ['admin123', 'snaptik2025']; // Multiple valid passwords
         
         this.init();
     }
@@ -113,7 +113,11 @@ class LoginManager {
     validateCredentials(username, password) {
         // In production, this should make an API call to verify credentials
         const validUsernames = ['admin', 'administrator', 'blogger'];
-        return validUsernames.includes(username.toLowerCase()) && password === this.defaultPassword;
+        
+        const usernameValid = validUsernames.includes(username.toLowerCase());
+        const passwordValid = this.validPasswords.includes(password);
+        
+        return usernameValid && passwordValid;
     }
 
     handleSuccessfulLogin(rememberMe) {
@@ -231,12 +235,23 @@ class LoginManager {
     }
 
     setLoadingState(button, loading) {
+        const btnText = button.querySelector('.btn-text');
+        const btnSpinner = button.querySelector('.btn-spinner');
+        
         if (loading) {
             button.disabled = true;
-            button.innerHTML = '<span class="btn-spinner">⟳</span> Authenticating...';
+            if (btnText) btnText.textContent = 'Authenticating...';
+            if (btnSpinner) {
+                btnSpinner.classList.remove('hidden');
+                btnSpinner.classList.add('btn-spinner');
+            }
         } else {
             button.disabled = false;
-            button.innerHTML = '<span>🔑</span> Sign In';
+            if (btnText) btnText.textContent = 'Sign In';
+            if (btnSpinner) {
+                btnSpinner.classList.add('hidden');
+                btnSpinner.classList.remove('btn-spinner');
+            }
         }
     }
 
