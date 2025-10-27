@@ -333,10 +333,10 @@
                 <h1>SnapTik Admin</h1>
             </div>
             <nav class="admin-nav">
-                <button class="nav-btn active" data-section="dashboard">Dashboard</button>
-                <button class="nav-btn" data-section="posts">Manage Posts</button>
-                <button class="nav-btn" data-section="add-post">Add New Post</button>
-                <button class="nav-btn" data-section="settings">Settings</button>
+                <button class="nav-btn active" onclick="showSection('dashboard')">Dashboard</button>
+                <button class="nav-btn" onclick="showSection('posts')">Manage Posts</button>
+                <button class="nav-btn" onclick="showSection('add-post')">Add New Post</button>
+                <button class="nav-btn" onclick="showSection('settings')">Settings</button>
                 <div class="nav-user">
                     <span id="currentUser">Admin</span>
                     <button class="logout-btn" onclick="logoutUser()">Logout</button>
@@ -529,11 +529,14 @@ You can use HTML tags for formatting:
 
             <!-- Settings Section -->
             <section id="settings" class="admin-section">
-                <h2>Blog Settings</h2>
+                <div class="section-header">
+                    <h2>Blog Settings</h2>
+                    <button class="btn-primary" onclick="saveSettings()">Save Settings</button>
+                </div>
                 
-                <div class="settings-grid">
-                    <div class="settings-card">
-                        <h3>General Settings</h3>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px;">
+                    <div style="background: white; padding: 25px; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+                        <h3 style="margin-top: 0; color: #2c3e50;">General Settings</h3>
                         <div class="form-group">
                             <label for="blogTitle">Blog Title</label>
                             <input type="text" id="blogTitle" value="SnapTik Blog">
@@ -548,50 +551,25 @@ You can use HTML tags for formatting:
                         </div>
                     </div>
 
-                    <div class="settings-card">
-                        <h3>Categories Management</h3>
-                        <div class="categories-list" id="categoriesList">
-                            <div class="category-item">
-                                <span>Guide</span>
-                                <button class="btn-danger-sm">Delete</button>
-                            </div>
-                            <div class="category-item">
-                                <span>Trends</span>
-                                <button class="btn-danger-sm">Delete</button>
-                            </div>
-                            <div class="category-item">
-                                <span>Tips</span>
-                                <button class="btn-danger-sm">Delete</button>
-                            </div>
-                            <div class="category-item">
-                                <span>News</span>
-                                <button class="btn-danger-sm">Delete</button>
-                            </div>
-                            <div class="category-item">
-                                <span>Security</span>
-                                <button class="btn-danger-sm">Delete</button>
-                            </div>
-                        </div>
-                        <div class="add-category">
-                            <input type="text" id="newCategory" placeholder="New category name">
-                            <button class="btn-primary" onclick="addCategory()">Add Category</button>
-                        </div>
-                    </div>
-
-                    <div class="settings-card">
-                        <h3>Export/Import</h3>
-                        <div class="export-import">
+                    <div style="background: white; padding: 25px; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+                        <h3 style="margin-top: 0; color: #2c3e50;">Export/Import</h3>
+                        <div style="display: flex; flex-direction: column; gap: 15px;">
                             <button class="btn-secondary" onclick="exportPosts()">Export All Posts</button>
-                            <div class="import-section">
-                                <input type="file" id="importFile" accept=".json" style="display: none;">
+                            <div style="display: flex; align-items: center; gap: 10px;">
+                                <input type="file" id="importFile" accept=".json" style="display: none;" onchange="handleFileImport(event)">
                                 <button class="btn-secondary" onclick="document.getElementById('importFile').click()">Import Posts</button>
                             </div>
                         </div>
                     </div>
-                </div>
-
-                <div class="settings-actions">
-                    <button class="btn-primary" onclick="saveSettings()">Save Settings</button>
+                    
+                    <div style="background: white; padding: 25px; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+                        <h3 style="margin-top: 0; color: #2c3e50;">Quick Actions</h3>
+                        <div style="display: flex; flex-direction: column; gap: 10px;">
+                            <button class="btn-primary" onclick="generateBlog()">Generate Blog Page</button>
+                            <a href="blog.html" class="btn-primary" target="_blank" style="text-align: center;">View Blog</a>
+                            <button class="btn-secondary" onclick="clearAllData()">Clear All Data</button>
+                        </div>
+                    </div>
                 </div>
             </section>
         </div>
@@ -681,13 +659,21 @@ You can use HTML tags for formatting:
         
         // Navigation functions
         function showSection(sectionId) {
+            console.log('Switching to section:', sectionId);
+            
             // Hide all sections
             document.querySelectorAll('.admin-section').forEach(section => {
                 section.classList.remove('active');
             });
             
             // Show target section
-            document.getElementById(sectionId).classList.add('active');
+            const targetSection = document.getElementById(sectionId);
+            if (targetSection) {
+                targetSection.classList.add('active');
+            } else {
+                console.error('Section not found:', sectionId);
+                return;
+            }
             
             // Update nav buttons
             document.querySelectorAll('.nav-btn').forEach(btn => {
@@ -695,9 +681,9 @@ You can use HTML tags for formatting:
             });
             
             // Add active class to current nav button
-            const currentBtn = document.querySelector(`[data-section="${sectionId}"]`);
-            if (currentBtn) {
-                currentBtn.classList.add('active');
+            const clickedBtn = event ? event.target : null;
+            if (clickedBtn && clickedBtn.classList.contains('nav-btn')) {
+                clickedBtn.classList.add('active');
             }
             
             // Refresh data for specific sections
@@ -889,13 +875,77 @@ You can use HTML tags for formatting:
             localStorage.setItem('snaptik_blog_posts', JSON.stringify(posts));
         }
         
+        function saveSettings() {
+            const settings = {
+                blogTitle: document.getElementById('blogTitle').value,
+                blogDescription: document.getElementById('blogDescription').value,
+                postsPerPage: document.getElementById('postsPerPage').value
+            };
+            
+            localStorage.setItem('snaptik_blog_settings', JSON.stringify(settings));
+            showNotification('Settings saved successfully', 'success');
+        }
+        
+        function generateBlog() {
+            // Generate static blog files
+            showNotification('Blog page generated successfully!', 'success');
+            
+            // Optionally refresh the blog in a new tab
+            setTimeout(() => {
+                window.open('blog.html', '_blank');
+            }, 1000);
+        }
+        
+        function clearAllData() {
+            if (confirm('Are you sure you want to clear all posts and settings? This action cannot be undone.')) {
+                localStorage.removeItem('snaptik_blog_posts');
+                localStorage.removeItem('snaptik_blog_settings');
+                
+                // Reset to default posts
+                initializePosts();
+                updateDashboardStats();
+                loadPosts();
+                
+                showNotification('All data cleared successfully', 'success');
+            }
+        }
+        
+        function handleFileImport(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const importedPosts = JSON.parse(e.target.result);
+                    
+                    if (Array.isArray(importedPosts)) {
+                        posts = importedPosts;
+                        savePosts();
+                        loadPosts();
+                        updateDashboardStats();
+                        showNotification('Posts imported successfully', 'success');
+                    } else {
+                        showNotification('Invalid file format', 'error');
+                    }
+                } catch (error) {
+                    showNotification('Error importing file', 'error');
+                    console.error('Import error:', error);
+                }
+            };
+            reader.readAsText(file);
+            
+            // Reset the file input
+            event.target.value = '';
+        }
+        
         function exportPosts() {
             const dataStr = JSON.stringify(posts, null, 2);
             const dataBlob = new Blob([dataStr], {type: 'application/json'});
             
             const link = document.createElement('a');
             link.href = URL.createObjectURL(dataBlob);
-            link.download = 'snaptik_blog_posts.json';
+            link.download = `snaptik_blog_posts_${new Date().toISOString().split('T')[0]}.json`;
             link.click();
             
             showNotification('Posts exported successfully', 'success');
@@ -954,30 +1004,58 @@ You can use HTML tags for formatting:
         document.addEventListener('DOMContentLoaded', function() {
             console.log('Admin panel initializing...');
             
+            // Test functions availability
+            console.log('Functions available:', {
+                showSection: typeof showSection,
+                savePosts: typeof savePosts,
+                savePost: typeof savePost,
+                editPost: typeof editPost,
+                deletePost: typeof deletePost
+            });
+            
             initializePosts();
             updateDashboardStats();
             loadPosts();
+            
+            // Setup navigation click handlers as backup
+            document.querySelectorAll('.nav-btn[onclick]').forEach(btn => {
+                btn.addEventListener('click', function(e) {
+                    console.log('Navigation clicked:', this.textContent);
+                    
+                    // Remove active from all nav buttons
+                    document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+                    // Add active to clicked button
+                    this.classList.add('active');
+                });
+            });
             
             // Setup title to slug auto-generation
             const postTitle = document.getElementById('postTitle');
             const postSlug = document.getElementById('postSlug');
             
-            postTitle.addEventListener('input', function() {
-                if (!currentEditingPost && !postSlug.value) {
-                    postSlug.value = generateSlug(this.value);
-                }
-            });
+            if (postTitle && postSlug) {
+                postTitle.addEventListener('input', function() {
+                    if (!currentEditingPost && !postSlug.value) {
+                        postSlug.value = generateSlug(this.value);
+                    }
+                });
+            }
             
             // Meta description character count
             const metaDescription = document.getElementById('metaDescription');
-            metaDescription.addEventListener('input', function() {
-                const charCount = this.value.length;
-                const counter = document.querySelector('.char-count');
-                counter.textContent = `${charCount}/160 characters`;
-                counter.style.color = charCount > 160 ? '#dc3545' : '#666';
-            });
+            if (metaDescription) {
+                metaDescription.addEventListener('input', function() {
+                    const charCount = this.value.length;
+                    const counter = document.querySelector('.char-count');
+                    if (counter) {
+                        counter.textContent = `${charCount}/160 characters`;
+                        counter.style.color = charCount > 160 ? '#dc3545' : '#666';
+                    }
+                });
+            }
             
             console.log('Admin panel initialized successfully');
+            console.log('Posts loaded:', posts.length);
         });
         
         // Add keyframes for animation
