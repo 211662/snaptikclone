@@ -5,7 +5,7 @@ class LoginManager {
         this.maxAttempts = 3;
         this.lockoutTime = 5 * 60 * 1000; // 5 minutes
         this.sessionTimeout = 2 * 60 * 60 * 1000; // 2 hours
-        this.validPasswords = ['admin123', 'snaptik2025']; // Multiple valid passwords
+        this.validPasswords = ['Hao040596!@#']; // New secure password
         
         this.init();
     }
@@ -23,6 +23,8 @@ class LoginManager {
         const modal = document.getElementById('securityModal');
         const modalClose = document.querySelector('.modal-close');
         const modalBtn = document.querySelector('.btn-primary');
+        const passwordInput = document.getElementById('password');
+        const passwordHint = document.getElementById('passwordHint');
 
         if (loginForm) {
             loginForm.addEventListener('submit', (e) => this.handleLogin(e));
@@ -50,11 +52,33 @@ class LoginManager {
         }
 
         // Handle Enter key in password field
-        const passwordInput = document.getElementById('password');
         if (passwordInput) {
             passwordInput.addEventListener('keypress', (e) => {
                 if (e.key === 'Enter') {
                     loginForm.dispatchEvent(new Event('submit'));
+                }
+            });
+
+            // Show password hint on focus
+            passwordInput.addEventListener('focus', () => {
+                if (passwordHint) {
+                    passwordHint.classList.add('show');
+                }
+            });
+
+            // Hide password hint on blur (with delay)
+            passwordInput.addEventListener('blur', () => {
+                if (passwordHint) {
+                    setTimeout(() => {
+                        passwordHint.classList.remove('show');
+                    }, 3000); // Hide after 3 seconds
+                }
+            });
+
+            // Hide hint when user starts typing
+            passwordInput.addEventListener('input', () => {
+                if (passwordHint && passwordInput.value.length > 0) {
+                    passwordHint.classList.remove('show');
                 }
             });
         }
