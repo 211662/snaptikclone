@@ -298,6 +298,7 @@
         <div class="loading-content">
             <div class="loading-spinner"></div>
             <p>Initializing SnapTik Admin...</p>
+            <button class="skip-loading-btn" onclick="skipLoading()">Skip Loading</button>
         </div>
     </div>
 
@@ -335,6 +336,15 @@
                 window.location.href = 'login.html';
             }
         }, 60000); // Check every minute
+
+        // Skip loading function
+        function skipLoading() {
+            const adminLoading = document.getElementById('adminLoading');
+            if (adminLoading) {
+                adminLoading.style.display = 'none';
+            }
+            console.log('Loading skipped by user');
+        }
     </script>
 </body>
 </html>

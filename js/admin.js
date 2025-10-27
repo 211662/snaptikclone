@@ -41,6 +41,15 @@ let nextPostId = 3;
 document.addEventListener('DOMContentLoaded', function() {
     console.log('Admin panel initializing...');
     
+    // Force hide loading screen after max 3 seconds
+    const forceHideLoading = setTimeout(() => {
+        const adminLoading = document.getElementById('adminLoading');
+        if (adminLoading) {
+            adminLoading.style.display = 'none';
+            console.log('Force hiding loading screen');
+        }
+    }, 3000);
+    
     // Hide initial loading after a short delay
     setTimeout(() => {
         const adminLoading = document.getElementById('adminLoading');
@@ -48,11 +57,12 @@ document.addEventListener('DOMContentLoaded', function() {
             adminLoading.classList.add('fade-out');
             setTimeout(() => {
                 adminLoading.style.display = 'none';
+                clearTimeout(forceHideLoading); // Clear force timeout
             }, 500);
         }
-    }, 1500);
+    }, 1000); // Reduced from 1500 to 1000
     
-    // Add small delay to ensure all resources are loaded
+    // Initialize admin components
     setTimeout(() => {
         try {
             initializeAdmin();
@@ -69,15 +79,22 @@ document.addEventListener('DOMContentLoaded', function() {
                 adminLoading.style.display = 'none';
             }
         }
-    }, 800);
+    }, 200); // Much faster initialization
 });
 
 function initializeAdmin() {
-    // Load posts from localStorage if available
-    const savedPosts = localStorage.getItem('snaptik_blog_posts');
-    if (savedPosts) {
-        posts = JSON.parse(savedPosts);
-        nextPostId = Math.max(...posts.map(p => p.id)) + 1;
+    try {
+        // Load posts from localStorage if available
+        const savedPosts = localStorage.getItem('snaptik_blog_posts');
+        if (savedPosts) {
+            posts = JSON.parse(savedPosts);
+            nextPostId = Math.max(...posts.map(p => p.id)) + 1;
+        }
+        console.log('Admin initialized with', posts.length, 'posts');
+    } catch (error) {
+        console.error('Error initializing admin:', error);
+        // Fallback: use default posts if localStorage fails
+        console.log('Using default posts as fallback');
     }
 }
 
