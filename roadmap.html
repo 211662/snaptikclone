@@ -1,0 +1,843 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SnapTikks Development Roadmap | Future Vision</title>
+    <meta name="description" content="Explore SnapTikks development roadmap and future plans for becoming the leading TikTok video downloader platform">
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        /* Roadmap Specific Styles */
+        .roadmap-hero {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 100px 0;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .roadmap-hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000"><defs><radialGradient id="a" cx="50%" cy="50%"><stop offset="0%" stop-color="%23fff" stop-opacity="0.1"/><stop offset="100%" stop-color="%23fff" stop-opacity="0"/></radialGradient></defs><circle cx="200" cy="200" r="100" fill="url(%23a)"/><circle cx="800" cy="300" r="150" fill="url(%23a)"/><circle cx="400" cy="700" r="120" fill="url(%23a)"/></svg>');
+            opacity: 0.3;
+            animation: float 20s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(180deg); }
+        }
+
+        .roadmap-hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            font-weight: 700;
+            position: relative;
+            z-index: 2;
+        }
+
+        .roadmap-hero .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            margin-bottom: 2rem;
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero-stats {
+            display: flex;
+            justify-content: center;
+            gap: 3rem;
+            margin-top: 3rem;
+            position: relative;
+            z-index: 2;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 700;
+            display: block;
+            color: #ffeb3b;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+        /* Executive Summary */
+        .exec-summary {
+            padding: 80px 0;
+            background: #f8f9fa;
+        }
+
+        .summary-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+        }
+
+        .summary-content h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+            color: #2c3e50;
+        }
+
+        .summary-features {
+            list-style: none;
+            padding: 0;
+        }
+
+        .summary-features li {
+            margin: 1rem 0;
+            padding-left: 2rem;
+            position: relative;
+        }
+
+        .summary-features li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: #27ae60;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
+        .summary-visual {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+
+        .visual-diagram {
+            width: 100%;
+            height: 300px;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+        }
+
+        /* Timeline Styles */
+        .roadmap-timeline {
+            padding: 80px 0;
+            background: white;
+        }
+
+        .timeline-container {
+            position: relative;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .timeline-header {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        .timeline-header h2 {
+            font-size: 2.5rem;
+            color: #2c3e50;
+            margin-bottom: 1rem;
+        }
+
+        .timeline {
+            position: relative;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 50%;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            background: linear-gradient(to bottom, #667eea, #764ba2);
+            transform: translateX(-50%);
+        }
+
+        .timeline-item {
+            margin: 3rem 0;
+            position: relative;
+            opacity: 0;
+            animation: fadeInUp 0.6s forwards;
+        }
+
+        .timeline-item:nth-child(1) { animation-delay: 0.1s; }
+        .timeline-item:nth-child(2) { animation-delay: 0.2s; }
+        .timeline-item:nth-child(3) { animation-delay: 0.3s; }
+        .timeline-item:nth-child(4) { animation-delay: 0.4s; }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .timeline-content {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            width: 45%;
+            position: relative;
+        }
+
+        .timeline-item:nth-child(odd) .timeline-content {
+            margin-left: 55%;
+        }
+
+        .timeline-item:nth-child(even) .timeline-content {
+            margin-right: 55%;
+        }
+
+        .timeline-marker {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            width: 20px;
+            height: 20px;
+            background: #667eea;
+            border-radius: 50%;
+            border: 4px solid white;
+            box-shadow: 0 0 0 4px #667eea;
+            z-index: 10;
+        }
+
+        .phase-badge {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            display: inline-block;
+            margin-bottom: 1rem;
+        }
+
+        .timeline-content h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: #2c3e50;
+        }
+
+        .timeline-tasks {
+            list-style: none;
+            padding: 0;
+            margin: 1rem 0;
+        }
+
+        .timeline-tasks li {
+            margin: 0.5rem 0;
+            padding-left: 1.5rem;
+            position: relative;
+            font-size: 0.9rem;
+        }
+
+        .timeline-tasks li::before {
+            content: '→';
+            position: absolute;
+            left: 0;
+            color: #667eea;
+            font-weight: bold;
+        }
+
+        .timeline-goal {
+            background: #f8f9fa;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-top: 1rem;
+            border-left: 4px solid #667eea;
+        }
+
+        /* Google Cloud Section */
+        .gcp-section {
+            padding: 80px 0;
+            background: linear-gradient(135deg, #4285f4 0%, #34a853 100%);
+            color: white;
+        }
+
+        .gcp-header {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        .gcp-header h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .gcp-services {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .gcp-service {
+            background: rgba(255,255,255,0.1);
+            padding: 2rem;
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+
+        .gcp-service h4 {
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .service-icon {
+            width: 30px;
+            height: 30px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Goals Section */
+        .goals-section {
+            padding: 80px 0;
+            background: #f8f9fa;
+        }
+
+        .goals-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+        }
+
+        .goal-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            border-top: 4px solid #667eea;
+        }
+
+        .goal-card h3 {
+            color: #2c3e50;
+            margin-bottom: 1.5rem;
+            font-size: 1.5rem;
+        }
+
+        .goal-metrics {
+            display: flex;
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .metric {
+            text-align: center;
+            flex: 1;
+        }
+
+        .metric-number {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #667eea;
+            display: block;
+        }
+
+        .metric-label {
+            font-size: 0.9rem;
+            color: #7f8c8d;
+        }
+
+        /* CTA Section */
+        .cta-section {
+            padding: 80px 0;
+            background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+            color: white;
+            text-align: center;
+        }
+
+        .cta-content h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .cta-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .btn-primary, .btn-secondary {
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+
+        .btn-primary {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: white;
+            border: 2px solid white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+        }
+
+        .btn-secondary:hover {
+            background: white;
+            color: #2c3e50;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .roadmap-hero h1 { font-size: 2.5rem; }
+            .hero-stats { flex-direction: column; gap: 1rem; }
+            .summary-grid { grid-template-columns: 1fr; gap: 2rem; }
+            .timeline::before { left: 30px; }
+            .timeline-content { width: calc(100% - 80px); margin-left: 80px !important; margin-right: 0 !important; }
+            .timeline-marker { left: 30px; }
+            .goals-grid { grid-template-columns: 1fr; }
+            .gcp-services { grid-template-columns: 1fr; }
+            .cta-buttons { flex-direction: column; align-items: center; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav style="background: rgba(255,255,255,0.95); backdrop-filter: blur(10px); position: fixed; top: 0; width: 100%; z-index: 1000; padding: 1rem 0; box-shadow: 0 2px 20px rgba(0,0,0,0.1);">
+        <div class="container" style="max-width: 1200px; margin: 0 auto; padding: 0 2rem; display: flex; justify-content: space-between; align-items: center;">
+            <a href="/" style="font-size: 1.5rem; font-weight: 700; color: #667eea; text-decoration: none;">SnapTikks</a>
+            <div style="display: flex; gap: 2rem;">
+                <a href="/" style="color: #2c3e50; text-decoration: none; font-weight: 500;">Home</a>
+                <a href="/blog.html" style="color: #2c3e50; text-decoration: none; font-weight: 500;">Blog</a>
+                <a href="/roadmap.html" style="color: #667eea; text-decoration: none; font-weight: 600;">Roadmap</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="roadmap-hero">
+        <div class="container" style="max-width: 1200px; margin: 0 auto; padding: 0 2rem;">
+            <h1>Development Roadmap</h1>
+            <p class="subtitle">Our journey to becoming the world's leading TikTok video downloader platform</p>
+            
+            <div class="hero-stats">
+                <div class="stat-item">
+                    <span class="stat-number">100K+</span>
+                    <span class="stat-label">Target Monthly Users</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number">&lt;5s</span>
+                    <span class="stat-label">Processing Time</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number">24/7</span>
+                    <span class="stat-label">Uptime Goal</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Executive Summary -->
+    <section class="exec-summary">
+        <div class="container" style="max-width: 1200px; margin: 0 auto; padding: 0 2rem;">
+            <div class="summary-grid">
+                <div class="summary-content">
+                    <h2>Project Overview</h2>
+                    <p style="font-size: 1.1rem; line-height: 1.6; margin-bottom: 2rem; color: #555;">
+                        SnapTikks is a cutting-edge SaaS platform that enables users to download high-quality TikTok videos without watermarks. We're solving the massive demand for clean, reusable video content.
+                    </p>
+                    
+                    <ul class="summary-features">
+                        <li><strong>Lightning Fast:</strong> Sub-5 second processing time</li>
+                        <li><strong>No Watermarks:</strong> Clean, professional video output</li>
+                        <li><strong>Global CDN:</strong> Optimized for worldwide access</li>
+                        <li><strong>Free to Use:</strong> No registration or payments required</li>
+                        <li><strong>Mobile Optimized:</strong> Perfect experience on all devices</li>
+                        <li><strong>Batch Processing:</strong> Multiple downloads simultaneously</li>
+                    </ul>
+                </div>
+                
+                <div class="summary-visual">
+                    <div class="visual-diagram">
+                        <div>
+                            <div style="font-size: 2rem; margin-bottom: 1rem;">🚀</div>
+                            <div>Production Ready</div>
+                            <div style="font-size: 0.9rem; opacity: 0.8; margin-top: 0.5rem;">Currently serving users at<br><strong>snaptikks.com</strong></div>
+                        </div>
+                    </div>
+                    <p style="color: #666; font-size: 0.9rem;">
+                        Live platform already processing thousands of video downloads daily
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Development Timeline -->
+    <section class="roadmap-timeline">
+        <div class="container" style="max-width: 1200px; margin: 0 auto; padding: 0 2rem;">
+            <div class="timeline-header">
+                <h2>Development Timeline</h2>
+                <p style="font-size: 1.1rem; color: #666; max-width: 600px; margin: 0 auto;">
+                    Our strategic roadmap for scaling SnapTikks into a global platform with enterprise-grade infrastructure
+                </p>
+            </div>
+
+            <div class="timeline">
+                <!-- Phase 1 -->
+                <div class="timeline-item">
+                    <div class="timeline-marker"></div>
+                    <div class="timeline-content">
+                        <span class="phase-badge">Phase 1: Infrastructure & Optimization</span>
+                        <h3>3-Month Foundation (Q1 2026)</h3>
+                        
+                        <ul class="timeline-tasks">
+                            <li>Complete migration to Google Cloud Run for auto-scaling</li>
+                            <li>Implement Cloud Storage (GCS) caching system</li>
+                            <li>Deploy global CDN for faster content delivery</li>
+                            <li>Establish monitoring & analytics with BigQuery</li>
+                            <li>Optimize API performance for 50K concurrent users</li>
+                        </ul>
+
+                        <div class="timeline-goal">
+                            <strong>🎯 Goal:</strong> Handle 50,000 concurrent users with 99.9% uptime
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Phase 2 -->
+                <div class="timeline-item">
+                    <div class="timeline-marker"></div>
+                    <div class="timeline-content">
+                        <span class="phase-badge">Phase 2: Feature Expansion</span>
+                        <h3>Feature Development (Q2 2026)</h3>
+                        
+                        <ul class="timeline-tasks">
+                            <li>Launch MP3 audio extraction feature</li>
+                            <li>Add thumbnail/cover image download</li>
+                            <li>Implement batch download capabilities</li>
+                            <li>Create analytics dashboard with Looker Studio</li>
+                            <li>Deploy Progressive Web App (PWA)</li>
+                        </ul>
+
+                        <div class="timeline-goal">
+                            <strong>🎯 Goal:</strong> Reach 100,000 monthly active users (MAU)
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Phase 3 -->
+                <div class="timeline-item">
+                    <div class="timeline-marker"></div>
+                    <div class="timeline-content">
+                        <span class="phase-badge">Phase 3: Platform Expansion</span>
+                        <h3>Multi-Platform Support (Q3-Q4 2026)</h3>
+                        
+                        <ul class="timeline-tasks">
+                            <li>Add Instagram Reels download support</li>
+                            <li>Integrate Douyin (Chinese TikTok) compatibility</li>
+                            <li>Launch YouTube Shorts downloader</li>
+                            <li>Expand to European and American data centers</li>
+                            <li>Implement advanced user analytics</li>
+                        </ul>
+
+                        <div class="timeline-goal">
+                            <strong>🎯 Goal:</strong> Become top 3 video downloader in target markets
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Phase 4 -->
+                <div class="timeline-item">
+                    <div class="timeline-marker"></div>
+                    <div class="timeline-content">
+                        <span class="phase-badge">Phase 4: Scale & Monetization</span>
+                        <h3>Enterprise Growth (2027)</h3>
+                        
+                        <ul class="timeline-tasks">
+                            <li>Reach 1 million monthly active users</li>
+                            <li>Launch premium features & API access</li>
+                            <li>Implement enterprise solutions</li>
+                            <li>Global infrastructure optimization</li>
+                            <li>Strategic partnerships & integrations</li>
+                        </ul>
+
+                        <div class="timeline-goal">
+                            <strong>🎯 Goal:</strong> 1M+ MAU and sustainable revenue model
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Google Cloud Requirements -->
+    <section class="gcp-section">
+        <div class="container" style="max-width: 1200px; margin: 0 auto; padding: 0 2rem;">
+            <div class="gcp-header">
+                <h2>Google Cloud Infrastructure Requirements</h2>
+                <p style="font-size: 1.1rem; opacity: 0.9; max-width: 700px; margin: 0 auto;">
+                    To support our rapid growth and ensure world-class performance, we need strategic access to Google Cloud Platform services
+                </p>
+            </div>
+
+            <div class="gcp-services">
+                <div class="gcp-service">
+                    <h4>
+                        <div class="service-icon">☁️</div>
+                        Cloud Run / Compute Engine
+                    </h4>
+                    <p style="margin-bottom: 1rem; line-height: 1.6;">
+                        <strong>Current:</strong> Processing thousands of requests daily<br>
+                        <strong>Need:</strong> Auto-scaling infrastructure to handle viral traffic spikes without downtime
+                    </p>
+                    <div style="background: rgba(255,255,255,0.1); padding: 1rem; border-radius: 8px; font-size: 0.9rem;">
+                        <strong>Impact:</strong> Ensures system stability during peak loads and enables global expansion
+                    </div>
+                </div>
+
+                <div class="gcp-service">
+                    <h4>
+                        <div class="service-icon">💾</div>
+                        Cloud Storage (GCS)
+                    </h4>
+                    <p style="margin-bottom: 1rem; line-height: 1.6;">
+                        <strong>Critical Need:</strong> Caching processed videos to eliminate redundant processing<br>
+                        <strong>Benefit:</strong> Instant delivery for popular content
+                    </p>
+                    <div style="background: rgba(255,255,255,0.1); padding: 1rem; border-radius: 8px; font-size: 0.9rem;">
+                        <strong>Impact:</strong> 10x faster response times and massive cost reduction
+                    </div>
+                </div>
+
+                <div class="gcp-service">
+                    <h4>
+                        <div class="service-icon">🌐</div>
+                        Cloud CDN
+                    </h4>
+                    <p style="margin-bottom: 1rem; line-height: 1.6;">
+                        <strong>Global Reach:</strong> Users from 50+ countries access our platform<br>
+                        <strong>Need:</strong> Edge locations for optimal worldwide performance
+                    </p>
+                    <div style="background: rgba(255,255,255,0.1); padding: 1rem; border-radius: 8px; font-size: 0.9rem;">
+                        <strong>Impact:</strong> Superior user experience regardless of geographic location
+                    </div>
+                </div>
+
+                <div class="gcp-service">
+                    <h4>
+                        <div class="service-icon">📊</div>
+                        BigQuery & Looker Studio
+                    </h4>
+                    <p style="margin-bottom: 1rem; line-height: 1.6;">
+                        <strong>Data Intelligence:</strong> Analyze terabytes of usage logs<br>
+                        <strong>Insights:</strong> User behavior, trending content, system optimization
+                    </p>
+                    <div style="background: rgba(255,255,255,0.1); padding: 1rem; border-radius: 8px; font-size: 0.9rem;">
+                        <strong>Impact:</strong> Data-driven decisions for product development and scaling
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Goals Section -->
+    <section class="goals-section">
+        <div class="container" style="max-width: 1200px; margin: 0 auto; padding: 0 2rem;">
+            <div style="text-align: center; margin-bottom: 4rem;">
+                <h2 style="font-size: 2.5rem; color: #2c3e50; margin-bottom: 1rem;">Project Goals</h2>
+                <p style="font-size: 1.1rem; color: #666; max-width: 600px; margin: 0 auto;">
+                    Ambitious yet achievable targets that will establish SnapTikks as the industry leader
+                </p>
+            </div>
+
+            <div class="goals-grid">
+                <div class="goal-card">
+                    <h3>🎯 Short-term Goals (3-6 months)</h3>
+                    <ul style="list-style: none; padding: 0; line-height: 1.8;">
+                        <li>• Scale to 100,000 monthly active users</li>
+                        <li>• Maintain sub-5 second processing times</li>
+                        <li>• Achieve 99.9% uptime reliability</li>
+                        <li>• Complete Google Cloud migration</li>
+                        <li>• Launch advanced caching system</li>
+                    </ul>
+                    
+                    <div class="goal-metrics">
+                        <div class="metric">
+                            <span class="metric-number">100K</span>
+                            <span class="metric-label">Target MAU</span>
+                        </div>
+                        <div class="metric">
+                            <span class="metric-number">99.9%</span>
+                            <span class="metric-label">Uptime</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="goal-card">
+                    <h3>🚀 Long-term Vision (1-2 years)</h3>
+                    <ul style="list-style: none; padding: 0; line-height: 1.8;">
+                        <li>• Reach 1 million monthly active users</li>
+                        <li>• Top 3 video downloader globally</li>
+                        <li>• Multi-platform support (Instagram, YouTube)</li>
+                        <li>• Enterprise API solutions</li>
+                        <li>• Sustainable revenue model</li>
+                    </ul>
+                    
+                    <div class="goal-metrics">
+                        <div class="metric">
+                            <span class="metric-number">1M+</span>
+                            <span class="metric-label">Target MAU</span>
+                        </div>
+                        <div class="metric">
+                            <span class="metric-number">Top 3</span>
+                            <span class="metric-label">Market Position</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Call to Action -->
+    <section class="cta-section">
+        <div class="container" style="max-width: 800px; margin: 0 auto; padding: 0 2rem;">
+            <div class="cta-content">
+                <h2>Ready to Scale Together?</h2>
+                <p style="font-size: 1.1rem; opacity: 0.9; margin-bottom: 2rem; line-height: 1.6;">
+                    SnapTikks is positioned for explosive growth. With Google Cloud's enterprise infrastructure, 
+                    we can deliver exceptional performance to millions of users worldwide.
+                </p>
+                
+                <div class="cta-buttons">
+                    <a href="/" class="btn-primary">Try SnapTikks Live</a>
+                    <a href="/contact.html" class="btn-secondary">Contact Our Team</a>
+                </div>
+                
+                <div style="margin-top: 3rem; font-size: 0.9rem; opacity: 0.7;">
+                    <p>🌟 Currently live at <strong>snaptikks.com</strong> • Serving users in 50+ countries</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer style="background: #2c3e50; color: white; padding: 3rem 0; text-align: center;">
+        <div class="container" style="max-width: 1200px; margin: 0 auto; padding: 0 2rem;">
+            <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 2rem;">
+                <div>
+                    <h3 style="margin-bottom: 0.5rem;">SnapTikks</h3>
+                    <p style="opacity: 0.7; font-size: 0.9rem;">The future of video downloading</p>
+                </div>
+                <div style="display: flex; gap: 2rem;">
+                    <a href="/" style="color: white; text-decoration: none; opacity: 0.8;">Home</a>
+                    <a href="/blog.html" style="color: white; text-decoration: none; opacity: 0.8;">Blog</a>
+                    <a href="/privacy.html" style="color: white; text-decoration: none; opacity: 0.8;">Privacy</a>
+                    <a href="/terms.html" style="color: white; text-decoration: none; opacity: 0.8;">Terms</a>
+                </div>
+            </div>
+            <div style="margin-top: 2rem; padding-top: 2rem; border-top: 1px solid rgba(255,255,255,0.1); opacity: 0.6; font-size: 0.9rem;">
+                © 2025 SnapTikks. Built for the future of content creation.
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Smooth scrolling animation for timeline items
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        // Observe timeline items
+        document.querySelectorAll('.timeline-item').forEach(item => {
+            observer.observe(item);
+        });
+
+        // Add smooth scrolling to navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Animate stats on scroll
+        const animateStats = () => {
+            const stats = document.querySelectorAll('.stat-number, .metric-number');
+            stats.forEach(stat => {
+                const finalValue = stat.textContent;
+                if (!stat.hasAttribute('data-animated')) {
+                    stat.setAttribute('data-animated', 'true');
+                    // Add counting animation here if needed
+                }
+            });
+        };
+
+        // Trigger stats animation when in view
+        const statsObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    animateStats();
+                }
+            });
+        });
+
+        document.querySelectorAll('.hero-stats, .goal-metrics').forEach(element => {
+            statsObserver.observe(element);
+        });
+    </script>
+</body>
+</html>
