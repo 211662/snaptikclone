@@ -7,15 +7,31 @@
     <!-- Homepage -->
     <url>
         <loc>https://snaptikks.com/</loc>
-        <lastmod>2025-10-18</lastmod>
+        <lastmod>2025-11-09</lastmod>
         <changefreq>daily</changefreq>
         <priority>1.0</priority>
+    </url>
+    
+    <!-- Blog -->
+    <url>
+        <loc>https://snaptikks.com/blog.html</loc>
+        <lastmod>2025-11-09</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.9</priority>
+    </url>
+    
+    <!-- Roadmap -->
+    <url>
+        <loc>https://snaptikks.com/roadmap.html</loc>
+        <lastmod>2025-11-09</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
     </url>
     
     <!-- Bulk Download Page -->
     <url>
         <loc>https://snaptikks.com/bulk-download.html</loc>
-        <lastmod>2025-10-18</lastmod>
+        <lastmod>2025-11-09</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.8</priority>
     </url>
@@ -23,15 +39,30 @@
     <!-- Contact Page -->
     <url>
         <loc>https://snaptikks.com/contact.html</loc>
-        <lastmod>2025-10-18</lastmod>
+        <lastmod>2025-11-09</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.5</priority>
+    </url>
+    
+    <!-- Blog Articles -->
+    <url>
+        <loc>https://snaptikks.com/blog/download-tiktok-videos-no-watermark-save-sounds-fast-snaptik</loc>
+        <lastmod>2025-11-09</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.7</priority>
+    </url>
+    
+    <url>
+        <loc>https://snaptikks.com/blog/snaptik-best-no-watermark-tiktok-downloader</loc>
+        <lastmod>2025-11-09</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.7</priority>
     </url>
     
     <!-- Terms of Service -->
     <url>
         <loc>https://snaptikks.com/terms.html</loc>
-        <lastmod>2025-10-18</lastmod>
+        <lastmod>2025-11-09</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.4</priority>
     </url>
@@ -39,7 +70,7 @@
     <!-- Privacy Policy -->
     <url>
         <loc>https://snaptikks.com/privacy.html</loc>
-        <lastmod>2025-10-18</lastmod>
+        <lastmod>2025-11-09</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.4</priority>
     </url>

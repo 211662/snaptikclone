@@ -106,6 +106,77 @@
     }
     </script>
     
+    <!-- Organization Schema with Navigation -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "SnapTik",
+      "url": "https://snaptikks.com",
+      "logo": "https://snaptikks.com/logo/logo-snaptik.png",
+      "description": "Leading TikTok video downloader platform providing free, fast, and high-quality video downloads without watermarks.",
+      "foundingDate": "2025",
+      "sameAs": [
+        "https://snaptikks.com/blog.html",
+        "https://snaptikks.com/roadmap.html"
+      ],
+      "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": "https://snaptikks.com"
+      },
+      "hasOfferCatalog": {
+        "@type": "OfferCatalog",
+        "name": "SnapTik Services",
+        "itemListElement": [
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "TikTok Video Download",
+              "description": "Download TikTok videos without watermark"
+            }
+          },
+          {
+            "@type": "Offer", 
+            "itemOffered": {
+              "@type": "Service",
+              "name": "TikTok Audio Download",
+              "description": "Extract MP3 audio from TikTok videos"
+            }
+          }
+        ]
+      }
+    }
+    </script>
+    
+    <!-- Breadcrumb Schema -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "https://snaptikks.com"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Blog",
+          "item": "https://snaptikks.com/blog.html"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "Roadmap",
+          "item": "https://snaptikks.com/roadmap.html"
+        }
+      ]
+    }
+    </script>
+    
     <link rel="stylesheet" href="css/style.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
