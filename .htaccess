@@ -1,0 +1,16 @@
+# Redirect www to non-www
+RewriteEngine On
+RewriteCond %{HTTP_HOST} ^www\.snaptikks\.com$ [NC]
+RewriteRule ^(.*)$ https://snaptikks.com/$1 [R=301,L]
+
+# Force HTTPS
+RewriteCond %{HTTPS} !=on
+RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
+# Security headers
+<IfModule mod_headers.c>
+    Header always set X-Frame-Options DENY
+    Header always set X-Content-Type-Options nosniff
+    Header always set Referrer-Policy "strict-origin-when-cross-origin"
+    Header always set X-XSS-Protection "1; mode=block"
+</IfModule>

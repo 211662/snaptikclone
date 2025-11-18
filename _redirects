@@ -1,3 +1,6 @@
+# Domain redirects - www to non-www  
+https://www.snaptikks.com/*  https://snaptikks.com/:splat  301!
+
 # Static frontend files only (for Cloudflare Pages)
 
 # Serve index.html

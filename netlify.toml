@@ -17,10 +17,17 @@
   status = 200
   force = true
 
-# Headers for security
+# Headers for security and domain configuration
 [[headers]]
   for = "/*"
   [headers.values]
     X-Frame-Options = "DENY"
     X-Content-Type-Options = "nosniff"
     Referrer-Policy = "strict-origin-when-cross-origin"
+
+# Domain redirects - www to non-www
+[[redirects]]
+  from = "https://www.snaptikks.com/*"
+  to = "https://snaptikks.com/:splat"
+  status = 301
+  force = true
