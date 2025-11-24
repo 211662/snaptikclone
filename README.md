@@ -320,9 +320,17 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 
 ## 📧 Contact & Support
 
-- 📝 **Issues**: [GitHub Issues](https://github.com/yourusername/snaptikclone/issues)
+### **Business Information**
+- 🏢 **Company**: NHP STORE LLC
+- 📍 **Address**: 1795 Alysheba Way 7203a, Lexington, KY 40509, United States  
+- � **Business Email**: [nhp@snaptikks.com](mailto:nhp@snaptikks.com)
+- 🆘 **Support Email**: [support@snaptikks.com](mailto:support@snaptikks.com)
+- 💼 **Partnership Inquiries**: [business@snaptikks.com](mailto:business@snaptikks.com)
+
+### **Development Support**
+- �📝 **Issues**: [GitHub Issues](https://github.com/211662/snaptikclone/issues)
 - 📖 **Documentation**: [SETUP.md](SETUP.md)
-- 💬 **Discussions**: [GitHub Discussions](https://github.com/yourusername/snaptikclone/discussions)
+- 💬 **Discussions**: [GitHub Discussions](https://github.com/211662/snaptikclone/discussions)
 
 ## ⭐ Show Your Support
 
