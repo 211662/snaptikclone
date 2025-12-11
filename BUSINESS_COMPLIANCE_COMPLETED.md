@@ -26,7 +26,7 @@
 ### 3. **Business Information Page** (`/business.html`)
 - 📋 Legal business registration details
 - 🏢 Company: **NHP STORE LLC**
-- 📅 Founded: **2019**
+- 📅 Founded: **2025**
 - 💼 Industry: **Software Development & Technology Services**
 - 📧 Multiple contact channels
 - ⚖️ Legal compliance information
@@ -148,7 +148,7 @@ Company Details:
 - Legal Business Name: NHP STORE LLC
 - Business Address: 1795 Alysheba Way 7203a, Lexington, KY 40509, United States
 - Industry: Software Development & Technology Services
-- Founded: 2019
+- Founded: 2025
 - Website: https://snaptikks.com
 - Primary Service: TikTok Video Downloader (SnapTik)
 - Contact Email: nhp@snaptikks.com

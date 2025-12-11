@@ -6,7 +6,7 @@
 - **📧 Business Email**: nhp@snaptikks.com
 - **📍 Business Address**: 1795 Alysheba Way 7203a, Lexington, KY 40509, United States
 - **🏢 Legal Name**: NHP STORE LLC
-- **📅 Founded**: 2019
+- **📅 Founded**: 2025
 
 ### **Additional Contact Channels:**
 - **🆘 Support Email**: support@snaptikks.com  

@@ -323,7 +323,8 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 ### **Business Information**
 - 🏢 **Company**: NHP STORE LLC
 - 📍 **Address**: 1795 Alysheba Way 7203a, Lexington, KY 40509, United States  
-- � **Business Email**: [nhp@snaptikks.com](mailto:nhp@snaptikks.com)
+- 📅 **Founded**: 2025
+- 📧 **Business Email**: [nhp@snaptikks.com](mailto:nhp@snaptikks.com)
 - 🆘 **Support Email**: [support@snaptikks.com](mailto:support@snaptikks.com)
 - 💼 **Partnership Inquiries**: [business@snaptikks.com](mailto:business@snaptikks.com)
 
