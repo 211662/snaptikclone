@@ -5,11 +5,16 @@ const loadingSection = document.getElementById('loading');
 const resultSection = document.getElementById('result');
 const errorSection = document.getElementById('error');
 const errorMessage = document.getElementById('errorMessage');
+const pasteBtn = document.getElementById('pasteBtn');
+const menuToggle = document.getElementById('menuToggle');
+const navMenu = document.getElementById('navMenu');
+const toastContainer = document.getElementById('toastContainer');
 
 // Result elements
 const videoThumbnail = document.getElementById('videoThumbnail');
 const videoTitle = document.getElementById('videoTitle');
 const videoAuthor = document.getElementById('videoAuthor');
+const videoStats = document.getElementById('videoStats');
 const downloadNoWatermark = document.getElementById('downloadNoWatermark');
 const downloadWithWatermark = document.getElementById('downloadWithWatermark');
 const downloadAudio = document.getElementById('downloadAudio');
@@ -17,70 +22,109 @@ const downloadAudio = document.getElementById('downloadAudio');
 // State
 let currentVideoData = null;
 
-// Event Listeners
+// ===== Mobile Menu =====
+if (menuToggle && navMenu) {
+    menuToggle.addEventListener('click', () => {
+        navMenu.classList.toggle('active');
+        menuToggle.classList.toggle('active');
+    });
+    // Close menu when clicking a link
+    navMenu.querySelectorAll('a').forEach(link => {
+        link.addEventListener('click', () => {
+            navMenu.classList.remove('active');
+            menuToggle.classList.remove('active');
+        });
+    });
+}
+
+// ===== Paste Button =====
+if (pasteBtn) {
+    pasteBtn.addEventListener('click', async () => {
+        try {
+            const text = await navigator.clipboard.readText();
+            if (text) {
+                videoUrlInput.value = text;
+                videoUrlInput.focus();
+                showToast('Pasted from clipboard!', 'success');
+            }
+        } catch {
+            showToast('Cannot access clipboard. Please paste manually.', 'error');
+        }
+    });
+}
+
+// ===== Event Listeners =====
 downloadBtn.addEventListener('click', handleDownload);
 videoUrlInput.addEventListener('keypress', (e) => {
-    if (e.key === 'Enter') {
-        handleDownload();
-    }
+    if (e.key === 'Enter') handleDownload();
 });
 
-// Auto-paste from clipboard on focus (if supported)
+// Auto-paste on focus
 videoUrlInput.addEventListener('focus', async () => {
     try {
         const text = await navigator.clipboard.readText();
-        if (text && (text.includes('tiktok.com') || text.includes('douyin.com'))) {
-            if (!videoUrlInput.value) {
-                videoUrlInput.value = text;
-            }
+        if (text && !videoUrlInput.value && (text.includes('tiktok.com') || text.includes('douyin.com'))) {
+            videoUrlInput.value = text;
+            showToast('TikTok link detected & pasted!', 'success');
         }
-    } catch (err) {
-        // Clipboard access not available or denied
-        console.log('Clipboard access not available');
-    }
+    } catch { /* Clipboard not available */ }
 });
 
-// Main download handler
+// ===== Toast Notification System =====
+function showToast(message, type = 'info', duration = 3000) {
+    const toast = document.createElement('div');
+    toast.className = `toast ${type}`;
+    const icons = { success: '✓', error: '✗', info: 'ℹ', warning: '⚠' };
+    toast.innerHTML = `<span class="toast-icon">${icons[type] || icons.info}</span><span>${message}</span>`;
+    document.body.appendChild(toast);
+    
+    // Trigger animation
+    requestAnimationFrame(() => toast.classList.add('show'));
+    
+    setTimeout(() => {
+        toast.classList.add('hiding');
+        setTimeout(() => toast.remove(), 300);
+    }, duration);
+}
+
+// ===== Main Download Handler =====
 async function handleDownload() {
     const url = videoUrlInput.value.trim();
     
-    // Validate URL
     if (!url) {
-        showError('Please enter a TikTok video URL');
+        showToast('Please enter a TikTok video URL', 'warning');
+        videoUrlInput.focus();
         return;
     }
     
     if (!isValidTikTokUrl(url)) {
-        showError('Invalid TikTok URL. Please enter a valid TikTok video link.');
+        showToast('Invalid TikTok URL. Please enter a valid link.', 'error');
         return;
     }
     
-    // Hide previous results/errors
     hideAllSections();
-    
-    // Show loading
     loadingSection.classList.remove('hidden');
+    downloadBtn.disabled = true;
+    downloadBtn.textContent = 'Processing...';
     
     try {
-        // Simulate API call (replace with actual API endpoint)
         const videoData = await fetchVideoData(url);
-        
-        // Store data
         currentVideoData = videoData;
-        
-        // Display results
         displayResults(videoData);
-        
+        showToast('Video ready to download!', 'success');
     } catch (error) {
         showError(error.message || 'Failed to fetch video. Please try again.');
+        showToast(error.message || 'Download failed', 'error');
     } finally {
         loadingSection.classList.add('hidden');
+        downloadBtn.disabled = false;
+        downloadBtn.textContent = 'Download';
     }
 }
 
-// Validate TikTok URL
+// ===== URL Validation =====
 function isValidTikTokUrl(url) {
-    const tiktokPatterns = [
+    const patterns = [
         /tiktok\.com\/@[\w.-]+\/video\/\d+/,
         /tiktok\.com\/v\/\d+/,
         /vm\.tiktok\.com\/[\w]+/,
@@ -89,224 +133,159 @@ function isValidTikTokUrl(url) {
         /v\.douyin\.com\/[\w]+/,
         /m\.tiktok\.com\/v\/\d+/
     ];
-    
-    return tiktokPatterns.some(pattern => pattern.test(url));
+    return patterns.some(p => p.test(url));
 }
 
-// Fetch video data from backend API
+// ===== Fetch Video Data =====
 async function fetchVideoData(url) {
-    try {
-        // For Cloudflare Workers, API is on the same domain
-        const apiURL = window.API_CONFIG ? window.API_CONFIG.baseURL : '';
-        const response = await fetch(`${apiURL}/api/tiktok/download`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ url: url })
-        });
+    const apiURL = window.API_CONFIG ? window.API_CONFIG.baseURL : '';
+    const response = await fetch(`${apiURL}/api/tiktok/download`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ url })
+    });
 
-        const result = await response.json();
+    const result = await response.json();
 
-        if (!response.ok) {
-            throw new Error(result.error || 'Failed to fetch video data');
-        }
-
-        if (!result.success) {
-            throw new Error(result.error || 'Failed to process video');
-        }
-
-        // Transform API response to match our format
-        return {
-            success: true,
-            thumbnail: result.data.thumbnail,
-            title: result.data.title,
-            author: `@${result.data.authorUsername}`,
-            authorName: result.data.author,
-            videoNoWatermark: result.data.videoNoWatermark,
-            videoWithWatermark: result.data.videoWithWatermark,
-            audioUrl: result.data.audioUrl,
-            views: result.data.views,
-            likes: result.data.likes,
-            duration: result.data.duration
-        };
-
-    } catch (error) {
-        console.error('Fetch error:', error);
-        throw new Error(error.message || 'Failed to fetch video data');
+    if (!response.ok || !result.success) {
+        throw new Error(result.error || 'Failed to process video');
     }
+
+    return {
+        thumbnail: result.data.thumbnail,
+        title: result.data.title,
+        author: `@${result.data.authorUsername}`,
+        authorName: result.data.author,
+        videoNoWatermark: result.data.videoNoWatermark,
+        videoWithWatermark: result.data.videoWithWatermark,
+        audioUrl: result.data.audioUrl,
+        views: result.data.views,
+        likes: result.data.likes,
+        duration: result.data.duration
+    };
 }
 
-// Display results
+// ===== Display Results =====
 function displayResults(data) {
-    videoThumbnail.src = data.thumbnail || 'https://via.placeholder.com/400x400?text=TikTok+Video';
-    videoThumbnail.alt = data.title;
-    videoTitle.textContent = data.title;
-    videoAuthor.textContent = data.author;
+    videoThumbnail.src = data.thumbnail || '';
+    videoThumbnail.alt = data.title || 'TikTok Video';
+    videoTitle.textContent = data.title || 'TikTok Video';
+    videoAuthor.textContent = `${data.authorName || ''} ${data.author || ''}`.trim();
     
-    // Add warning message if present
-    if (data.warning) {
-        const warningDiv = document.createElement('div');
-        warningDiv.style.cssText = 'padding: 10px; background: #fff3cd; border-radius: 5px; margin: 10px 0; color: #856404;';
-        warningDiv.innerHTML = `<strong>ℹ️ Note:</strong> ${data.warning}`;
-        resultSection.insertBefore(warningDiv, resultSection.firstChild);
+    // Stats badges
+    if (videoStats) {
+        videoStats.innerHTML = '';
+        if (data.views) videoStats.innerHTML += `<span class="stat-badge">👁 ${formatNumber(data.views)}</span>`;
+        if (data.likes) videoStats.innerHTML += `<span class="stat-badge">❤️ ${formatNumber(data.likes)}</span>`;
+        if (data.duration) videoStats.innerHTML += `<span class="stat-badge">⏱ ${formatDuration(data.duration)}</span>`;
     }
     
-    // Add video stats if available
-    if (data.views || data.likes) {
-        const statsText = [];
-        if (data.views) statsText.push(`👁 ${formatNumber(data.views)} views`);
-        if (data.likes) statsText.push(`❤ ${formatNumber(data.likes)} likes`);
-        if (data.duration) statsText.push(`⏱ ${formatDuration(data.duration)}s`);
-        
-        if (statsText.length > 0) {
-            videoAuthor.textContent += ` • ${statsText.join(' • ')}`;
-        }
-    }
-    
-    // Set up download buttons - just open TikTok URL
-    downloadNoWatermark.onclick = () => {
-        window.open(data.videoNoWatermark, '_blank');
-        showSuccessMessage('Opening TikTok video. Right-click on video and select "Save video as..." to download.');
-    };
-    downloadWithWatermark.onclick = () => {
-        window.open(data.videoWithWatermark, '_blank');
-        showSuccessMessage('Opening TikTok video. Right-click on video and select "Save video as..." to download.');
-    };
+    // Download buttons with proxy for direct save
+    downloadNoWatermark.onclick = () => startDownload(data.videoNoWatermark, 'tiktok-no-watermark.mp4');
+    downloadWithWatermark.onclick = () => startDownload(data.videoWithWatermark, 'tiktok-watermark.mp4');
     downloadAudio.onclick = () => {
         if (data.audioUrl) {
-            window.open(data.audioUrl, '_blank');
+            startDownload(data.audioUrl, 'tiktok-audio.mp3');
         } else {
-            showError('Audio download not available for this video.');
+            showToast('Audio not available for this video', 'warning');
         }
     };
     
     resultSection.classList.remove('hidden');
+    resultSection.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
 }
 
-// Format large numbers
+// ===== Direct Download via Proxy =====
+function startDownload(url, filename) {
+    if (!url) {
+        showToast('Download URL not available', 'error');
+        return;
+    }
+    
+    showToast('Starting download...', 'info');
+    
+    // Use proxy endpoint for direct download (triggers browser save dialog)
+    const apiURL = window.API_CONFIG ? window.API_CONFIG.baseURL : '';
+    const proxyUrl = `${apiURL}/api/tiktok/proxy?url=${encodeURIComponent(url)}&filename=${encodeURIComponent(filename)}`;
+    
+    // Create hidden link to trigger download
+    const a = document.createElement('a');
+    a.href = proxyUrl;
+    a.download = filename;
+    a.style.display = 'none';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    
+    setTimeout(() => showToast('Download started! Check your downloads folder.', 'success'), 1000);
+}
+
+// ===== Utility Functions =====
 function formatNumber(num) {
-    if (num >= 1000000) {
-        return (num / 1000000).toFixed(1) + 'M';
-    }
-    if (num >= 1000) {
-        return (num / 1000).toFixed(1) + 'K';
-    }
+    if (!num) return '0';
+    if (num >= 1000000) return (num / 1000000).toFixed(1) + 'M';
+    if (num >= 1000) return (num / 1000).toFixed(1) + 'K';
     return num.toString();
 }
 
-// Format duration
 function formatDuration(seconds) {
-    if (seconds < 60) return seconds + 's';
+    if (!seconds) return '0s';
+    if (seconds < 60) return Math.floor(seconds) + 's';
     const mins = Math.floor(seconds / 60);
     const secs = Math.floor(seconds % 60);
     return `${mins}:${secs.toString().padStart(2, '0')}`;
 }
 
-// Download file
-function downloadFile(url, filename) {
-    if (!url || url === '#' || url === '') {
-        showError('Download URL not available. The video may not support this download option.');
-        return;
-    }
-    
-    // Direct download - open URL in new tab
-    window.open(url, '_blank');
-    
-    // Show success message
-    showSuccessMessage('Download started! If download doesn\'t start, right-click the link and choose "Save as..."');
-}
-
-// Show success message
-function showSuccessMessage(message) {
-    const successDiv = document.createElement('div');
-    successDiv.className = 'success-message';
-    successDiv.innerHTML = `
-        <p>✓ ${message}</p>
-    `;
-    successDiv.style.cssText = `
-        position: fixed;
-        top: 20px;
-        right: 20px;
-        background: #4caf50;
-        color: white;
-        padding: 15px 25px;
-        border-radius: 8px;
-        box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-        z-index: 10000;
-        animation: slideIn 0.3s ease;
-    `;
-    
-    document.body.appendChild(successDiv);
-    
-    setTimeout(() => {
-        successDiv.style.animation = 'slideOut 0.3s ease';
-        setTimeout(() => {
-            document.body.removeChild(successDiv);
-        }, 300);
-    }, 3000);
-}
-
-// Show error message
 function showError(message) {
     errorMessage.textContent = message;
     errorSection.classList.remove('hidden');
-    
-    // Auto-hide after 5 seconds
-    setTimeout(() => {
-        errorSection.classList.add('hidden');
-    }, 5000);
+    setTimeout(() => errorSection.classList.add('hidden'), 5000);
 }
 
-// Hide all sections
 function hideAllSections() {
     loadingSection.classList.add('hidden');
     resultSection.classList.add('hidden');
     errorSection.classList.add('hidden');
 }
 
-// Smooth scroll for navigation
+// ===== Smooth Scroll =====
 document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     anchor.addEventListener('click', function (e) {
         e.preventDefault();
-        const targetId = this.getAttribute('href');
-        if (targetId === '#') return;
-        
-        const targetElement = document.querySelector(targetId);
-        if (targetElement) {
-            targetElement.scrollIntoView({
-                behavior: 'smooth',
-                block: 'start'
-            });
-        }
+        const id = this.getAttribute('href');
+        if (id === '#') return;
+        const el = document.querySelector(id);
+        if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
     });
 });
 
-// Add animation on scroll
-const observerOptions = {
-    threshold: 0.1,
-    rootMargin: '0px 0px -50px 0px'
-};
-
+// ===== Scroll Animations =====
 const observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
         if (entry.isIntersecting) {
-            entry.target.style.opacity = '1';
-            entry.target.style.transform = 'translateY(0)';
+            entry.target.classList.add('visible');
         }
     });
-}, observerOptions);
+}, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
 
-// Observe feature cards and steps
 document.querySelectorAll('.feature-card, .step, .faq-item').forEach(el => {
-    el.style.opacity = '0';
-    el.style.transform = 'translateY(20px)';
-    el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+    el.classList.add('animate-on-scroll');
     observer.observe(el);
 });
 
-// Console welcome message
-console.log('%c SnapTik Clone ', 'background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; font-size: 20px; padding: 10px;');
-console.log('%c✓ Backend API Connected!', 'color: #4caf50; font-size: 14px; font-weight: bold;');
-console.log('%cServer running on: http://localhost:3000', 'color: #667eea; font-size: 12px;');
-console.log('%cAPI Endpoint: /api/tiktok/download', 'color: #667eea; font-size: 12px;');
+// ===== FAQ Accordion =====
+document.querySelectorAll('.faq-item h3').forEach(title => {
+    title.style.cursor = 'pointer';
+    title.addEventListener('click', () => {
+        const item = title.parentElement;
+        const isOpen = item.classList.contains('open');
+        // Close all
+        document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
+        // Toggle clicked
+        if (!isOpen) item.classList.add('open');
+    });
+});
+
+// Console branding
+console.log('%c SnapTik ', 'background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; font-size: 20px; padding: 10px; border-radius: 8px;');
+console.log('%c✓ Ready', 'color: #4caf50; font-size: 14px; font-weight: bold;');

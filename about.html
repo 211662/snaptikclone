@@ -8,277 +8,260 @@
     'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
     })(window,document,'script','dataLayer','GTM-N9497SCT');</script>
     <!-- End Google Tag Manager -->
-    
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>About Us - SnapTik | NHP STORE LLC</title>
-    <meta name="description" content="Learn about SnapTik and NHP STORE LLC - Professional video download solutions provider established in 2025. Modern technology company based in Kentucky, US.">
-    <meta name="keywords" content="about snaptik, nhp store llc, video downloader company, tiktok downloader, startup">
-    <meta name="author" content="SnapTik">
-    
-    <!-- Google AdSense -->
+    <meta name="description" content="Learn about SnapTik and NHP STORE LLC - Professional video download solutions provider established in 2025.">
+    <meta name="keywords" content="about snaptik, nhp store llc, video downloader company, tiktok downloader">
     <meta name="google-adsense-account" content="ca-pub-3333877427723579">
-    
-    <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://snaptikks.com/about.html">
     <meta property="og:title" content="About SnapTik - NHP STORE LLC">
-    <meta property="og:description" content="Professional video download solutions provider established in 2025. Modern technology company based in Kentucky, US.">
+    <meta property="og:description" content="Professional video download solutions by NHP STORE LLC, established 2025.">
     <meta property="og:image" content="https://snaptikks.com/og-image.jpg">
-    
-    <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image">
     <meta property="twitter:url" content="https://snaptikks.com/about.html">
     <meta property="twitter:title" content="About SnapTik - NHP STORE LLC">
-    <meta property="twitter:description" content="Professional video download solutions provider established in 2025">
-    <meta property="twitter:image" content="https://snaptikks.com/og-image.jpg">
-    
-    <!-- Canonical URL -->
     <link rel="canonical" href="https://snaptikks.com/about.html">
-    
     <link rel="stylesheet" href="css/style.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
-        .about-hero {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 100px 0 80px;
-            text-align: center;
+        .about-hero{position:relative;z-index:1;padding:100px 0 70px;text-align:center}
+        .about-hero h1{font-size:48px;font-weight:800;letter-spacing:-1.5px;margin-bottom:16px;animation:fadeInDown .6s ease}
+        .about-hero .lead{font-size:18px;color:var(--text-secondary);max-width:550px;margin:0 auto 8px;animation:fadeInDown .6s ease .1s both}
+        .about-hero .sub-lead{font-size:15px;color:var(--text-muted);animation:fadeInDown .6s ease .2s both}
+        .company-section{position:relative;z-index:1;padding:80px 0}
+        .company-card{background:var(--dark-card);border:1px solid var(--dark-border);border-radius:var(--radius-xl);padding:48px;max-width:800px;margin:0 auto;position:relative;overflow:hidden}
+        .company-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--gradient-btn)}
+        .company-card h3{font-size:24px;font-weight:800;margin-bottom:24px;background:var(--gradient-main);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+        .company-detail{display:flex;justify-content:space-between;align-items:center;padding:14px 0;border-bottom:1px solid var(--dark-border)}
+        .company-detail:last-child{border-bottom:none}
+        .company-detail .label{color:var(--text-secondary);font-size:14px;font-weight:500}
+        .company-detail .value{color:var(--text-primary);font-size:14px;font-weight:600;text-align:right}
+        .company-detail .value a{color:var(--cyan);text-decoration:none;transition:opacity .3s}
+        .company-detail .value a:hover{opacity:.8}
+        .story-section{position:relative;z-index:1;padding:0 0 80px}
+        .story-content{max-width:800px;margin:0 auto}
+        .story-content p{color:var(--text-secondary);font-size:15px;line-height:1.8;margin-bottom:20px}
+        .story-content h3{font-size:22px;font-weight:700;color:var(--text-primary);margin:36px 0 14px}
+        .about-stats{position:relative;z-index:1;padding:60px 0;border-top:1px solid var(--dark-border);border-bottom:1px solid var(--dark-border)}
+        .about-stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;max-width:900px;margin:0 auto}
+        .about-stat-card{text-align:center;padding:28px 16px;background:var(--dark-card);border:1px solid var(--dark-border);border-radius:var(--radius-lg);transition:all .3s}
+        .about-stat-card:hover{border-color:rgba(37,244,238,.2);transform:translateY(-4px)}
+        .about-stat-card .number{font-size:32px;font-weight:800;background:var(--gradient-main);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:6px}
+        .about-stat-card .label{color:var(--text-secondary);font-size:13px;font-weight:500}
+        .timeline-section{position:relative;z-index:1;padding:80px 0}
+        .timeline{max-width:700px;margin:0 auto;position:relative}
+        .timeline::before{content:'';position:absolute;left:24px;top:0;bottom:0;width:2px;background:linear-gradient(to bottom,var(--cyan),var(--purple),var(--pink));border-radius:2px}
+        .timeline-item{display:flex;gap:28px;margin-bottom:32px;position:relative}
+        .timeline-dot{width:50px;height:50px;background:var(--dark-card);border:2px solid var(--cyan);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;z-index:2}
+        .timeline-item:nth-child(2) .timeline-dot{border-color:var(--purple)}
+        .timeline-item:nth-child(3) .timeline-dot{border-color:var(--pink)}
+        .timeline-body{background:var(--dark-card);border:1px solid var(--dark-border);border-radius:var(--radius-lg);padding:24px 28px;flex:1;transition:all .3s}
+        .timeline-body:hover{border-color:rgba(255,255,255,.1);transform:translateX(6px)}
+        .timeline-year{font-size:13px;font-weight:700;color:var(--cyan);text-transform:uppercase;letter-spacing:1px;margin-bottom:6px}
+        .timeline-item:nth-child(2) .timeline-year{color:var(--purple)}
+        .timeline-item:nth-child(3) .timeline-year{color:var(--pink)}
+        .timeline-body h4{font-size:17px;font-weight:700;color:var(--text-primary);margin-bottom:8px}
+        .timeline-body p{color:var(--text-secondary);font-size:14px;line-height:1.7;margin:0}
+        .values-section{position:relative;z-index:1;padding:80px 0;border-top:1px solid var(--dark-border)}
+        .values-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:20px;max-width:900px;margin:0 auto}
+        .value-card{background:var(--dark-card);border:1px solid var(--dark-border);padding:32px 28px;border-radius:var(--radius-lg);transition:all .4s;position:relative;overflow:hidden}
+        .value-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--gradient-btn);opacity:0;transition:opacity .4s}
+        .value-card:hover{border-color:rgba(255,255,255,.1);transform:translateY(-6px);background:var(--dark-card-hover)}
+        .value-card:hover::before{opacity:1}
+        .value-icon{width:56px;height:56px;display:flex;align-items:center;justify-content:center;font-size:26px;margin-bottom:18px;border-radius:var(--radius-md)}
+        .value-card:nth-child(1) .value-icon{background:rgba(37,244,238,.1)}
+        .value-card:nth-child(2) .value-icon{background:rgba(254,44,85,.1)}
+        .value-card:nth-child(3) .value-icon{background:rgba(168,85,247,.1)}
+        .value-card:nth-child(4) .value-icon{background:rgba(250,204,21,.1)}
+        .value-card h4{font-size:17px;margin-bottom:10px;color:var(--text-primary);font-weight:700}
+        .value-card p{color:var(--text-secondary);line-height:1.7;font-size:14px}
+        .cta-section{position:relative;z-index:1;padding:80px 0;text-align:center}
+        .cta-box{background:var(--dark-card);border:1px solid var(--dark-border);border-radius:var(--radius-xl);padding:60px 40px;max-width:700px;margin:0 auto;position:relative;overflow:hidden}
+        .cta-box::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--gradient-btn)}
+        .cta-box h2{font-size:32px;font-weight:800;color:var(--text-primary);margin-bottom:12px}
+        .cta-box p{color:var(--text-secondary);font-size:16px;margin-bottom:32px}
+        .cta-buttons{display:flex;justify-content:center;gap:16px;flex-wrap:wrap}
+        .btn-cta{display:inline-flex;align-items:center;gap:8px;padding:14px 32px;border-radius:var(--radius-md);font-size:14px;font-weight:600;text-decoration:none;transition:all .3s;font-family:inherit;cursor:pointer;border:none}
+        .btn-cta-primary{background:var(--gradient-btn);background-size:200% 100%;color:#fff}
+        .btn-cta-primary:hover{background-position:100% 0;transform:translateY(-2px);box-shadow:var(--glow-cyan),var(--glow-pink)}
+        .btn-cta-outline{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.15);color:var(--text-primary)}
+        .btn-cta-outline:hover{background:rgba(255,255,255,.08);border-color:var(--cyan);transform:translateY(-2px)}
+        @media(max-width:768px){
+            .about-hero{padding:70px 0 50px}
+            .about-hero h1{font-size:32px}
+            .about-stats-grid{grid-template-columns:repeat(2,1fr)}
+            .company-card{padding:28px 20px}
+            .company-detail{flex-direction:column;align-items:flex-start;gap:4px}
+            .company-detail .value{text-align:left}
+            .cta-box{padding:40px 24px}
+            .cta-box h2{font-size:26px}
         }
-        
-        .about-section {
-            padding: 80px 0;
-        }
-        
-        .about-content {
-            max-width: 800px;
-            margin: 0 auto;
-            line-height: 1.8;
-        }
-        
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 30px;
-            margin: 60px 0;
-        }
-        
-        .stat-card {
-            text-align: center;
-            padding: 30px;
-            background: white;
-            border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-        }
-        
-        .stat-number {
-            font-size: 2.5rem;
-            font-weight: 700;
-            color: #667eea;
-            display: block;
-        }
-        
-        .company-info {
-            background: #f8f9fa;
-            padding: 60px 0;
-        }
-        
-        .team-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 30px;
-            margin: 50px 0;
-        }
-        
-        .team-card {
-            background: white;
-            padding: 30px;
-            border-radius: 15px;
-            text-align: center;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
-        }
-        
-        .timeline {
-            margin: 50px 0;
-        }
-        
-        .timeline-item {
-            display: flex;
-            margin: 30px 0;
-            padding: 20px;
-            background: white;
-            border-radius: 10px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-        }
-        
-        .timeline-year {
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: #667eea;
-            min-width: 80px;
-        }
-        
-        .timeline-content {
-            margin-left: 30px;
+        @media(max-width:480px){
+            .about-hero h1{font-size:28px}
+            .about-stats-grid{grid-template-columns:1fr 1fr;gap:12px}
+            .values-grid{grid-template-columns:1fr}
         }
     </style>
 </head>
 <body>
     <!-- Google Tag Manager (noscript) -->
     <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-N9497SCT" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
-    <!-- End Google Tag Manager (noscript) -->
 
-    <!-- Navigation -->
-    <nav class="navbar">
+    <!-- Animated Background -->
+    <div class="bg-animation">
+        <div class="orb orb-1"></div>
+        <div class="orb orb-2"></div>
+        <div class="orb orb-3"></div>
+    </div>
+
+    <!-- Header -->
+    <header class="header">
         <div class="container">
-            <div class="nav-brand">
-                <img src="logo/logo-snaptik.png" alt="SnapTik Logo" class="logo">
-            </div>
-            <ul class="nav-menu">
-                <li><a href="/">Home</a></li>
-                <li><a href="/blog.html">Blog</a></li>
-                <li><a href="/about.html" class="active">About</a></li>
-                <li><a href="/contact.html">Contact</a></li>
-            </ul>
+            <a href="/" class="logo" style="text-decoration:none;">
+                <img src="/logo/logo-snaptik.png" alt="SnapTik Logo" style="height:34px;">
+                <span class="logo-text">SnapTik</span>
+            </a>
+            <button class="menu-toggle" id="menuToggle" aria-label="Toggle menu">
+                <span></span><span></span><span></span>
+            </button>
+            <nav class="nav" id="navMenu">
+                <a href="/">Home</a>
+                <a href="/blog.html">Blog</a>
+                <a href="/about.html" style="color:var(--cyan);">About</a>
+                <a href="/contact.html">Contact</a>
+            </nav>
         </div>
-    </nav>
+    </header>
 
-    <!-- Hero Section -->
+    <!-- Hero -->
     <section class="about-hero">
         <div class="container">
-            <h1>About SnapTik</h1>
+            <div class="hero-badge"><span class="pulse-dot"></span> About Us</div>
+            <h1>About <span class="gradient-text">SnapTik</span></h1>
             <p class="lead">Professional Video Download Solutions by NHP STORE LLC</p>
-            <p>A modern technology company established in 2025</p>
+            <p class="sub-lead">A modern technology company established in 2025</p>
         </div>
     </section>
 
-    <!-- Company Information -->
-    <section class="company-info">
+    <!-- Company Info -->
+    <section class="company-section">
         <div class="container">
-            <div class="about-content">
-                <h2>Company Information</h2>
-                <div class="company-details" style="background: white; padding: 40px; border-radius: 15px; margin: 30px 0;">
-                    <h3>NHP STORE LLC</h3>
-                    <p><strong>Legal Business Name:</strong> NHP STORE LLC</p>
-                    <p><strong>Founded:</strong> 2025</p>
-                    <p><strong>Industry:</strong> Software & Technology Solutions</p>
-                    <p><strong>Specialization:</strong> Video Download & Multimedia Tools</p>
-                    <p><strong>Business Registration:</strong> Licensed LLC in the United States</p>
-                    <p><strong>Business Address:</strong> 1795 Alysheba Way 7203a, Lexington, KY 40509, US</p>
-                    <p><strong>Website:</strong> <a href="https://snaptikks.com">https://snaptikks.com</a></p>
-                    <p><strong>Contact Email:</strong> <a href="mailto:nhp@snaptikks.com">nhp@snaptikks.com</a></p>
-                </div>
+            <div class="section-header">
+                <div class="section-tag">&#10022; Company</div>
+                <h2 class="section-title">Company Information</h2>
+                <p class="section-desc">The team behind SnapTik</p>
+            </div>
+            <div class="company-card">
+                <h3>NHP STORE LLC</h3>
+                <div class="company-detail"><span class="label">Legal Business Name</span><span class="value">NHP STORE LLC</span></div>
+                <div class="company-detail"><span class="label">Founded</span><span class="value">2025</span></div>
+                <div class="company-detail"><span class="label">Industry</span><span class="value">Software &amp; Technology Solutions</span></div>
+                <div class="company-detail"><span class="label">Specialization</span><span class="value">Video Download &amp; Multimedia Tools</span></div>
+                <div class="company-detail"><span class="label">Registration</span><span class="value">Licensed LLC &#8212; United States</span></div>
+                <div class="company-detail"><span class="label">Address</span><span class="value">1795 Alysheba Way 7203a, Lexington, KY 40509, US</span></div>
+                <div class="company-detail"><span class="label">Website</span><span class="value"><a href="https://snaptikks.com">snaptikks.com</a></span></div>
+                <div class="company-detail"><span class="label">Contact Email</span><span class="value"><a href="mailto:nhp@snaptikks.com">nhp@snaptikks.com</a></span></div>
             </div>
         </div>
     </section>
 
-    <!-- About Section -->
-    <section class="about-section">
+    <!-- Stats -->
+    <section class="about-stats">
         <div class="container">
-            <div class="about-content">
-                <h2>Our Story</h2>
-                <p>Founded in 2025, <strong>NHP STORE LLC</strong> is a technology company specializing in multimedia tools and video download solutions. Our flagship product, SnapTik, has quickly become one of the leading TikTok video downloaders, providing fast and reliable service to users globally.</p>
-                
-                <p>We started with a simple mission: to provide users with fast, reliable, and free tools to download and save their favorite social media content. As a newly established company, we're committed to innovation and excellence in the video download technology space.</p>
+            <div class="about-stats-grid">
+                <div class="about-stat-card"><div class="number">10M+</div><div class="label">Downloads</div></div>
+                <div class="about-stat-card"><div class="number">190+</div><div class="label">Countries</div></div>
+                <div class="about-stat-card"><div class="number">99.9%</div><div class="label">Uptime</div></div>
+                <div class="about-stat-card"><div class="number">24/7</div><div class="label">Available</div></div>
+            </div>
+        </div>
+    </section>
 
+    <!-- Our Story -->
+    <section class="story-section">
+        <div class="container">
+            <div class="section-header" style="margin-top:80px;">
+                <div class="section-tag">&#10022; Story</div>
+                <h2 class="section-title">Our Story</h2>
+            </div>
+            <div class="story-content">
+                <p>Founded in 2025, <strong style="color:var(--text-primary);">NHP STORE LLC</strong> is a technology company specializing in multimedia tools and video download solutions. Our flagship product, SnapTik, has quickly become one of the leading TikTok video downloaders, providing fast and reliable service to millions of users globally.</p>
+                <p>We started with a simple mission: to provide users with fast, reliable, and free tools to download and save their favorite social media content. As a growing company, we are committed to innovation and excellence in the video download technology space.</p>
                 <h3>Our Mission</h3>
-                <p>To democratize access to social media content by providing free, high-quality video download tools while respecting creators' rights and platform guidelines.</p>
-
+                <p>To democratize access to social media content by providing free, high-quality video download tools while respecting creators rights and platform guidelines.</p>
                 <h3>Our Vision</h3>
-                <p>To become the world's most trusted platform for social media content management and download solutions.</p>
-
-                <div class="stats-grid">
-                    <div class="stat-card">
-                        <span class="stat-number">Growing</span>
-                        <p>User Base</p>
-                    </div>
-                    <div class="stat-card">
-                        <span class="stat-number">Global</span>
-                        <p>Service Coverage</p>
-                    </div>
-                    <div class="stat-card">
-                        <span class="stat-number">99.9%</span>
-                        <p>Uptime Reliability</p>
-                    </div>
-                    <div class="stat-card">
-                        <span class="stat-number">24/7</span>
-                        <p>Service Available</p>
-                    </div>
-                </div>
+                <p>To become the worlds most trusted platform for social media content management and download solutions, powered by cutting-edge technology and a passion for user experience.</p>
             </div>
         </div>
     </section>
 
     <!-- Timeline -->
-    <section class="about-section" style="background: #f8f9fa;">
+    <section class="timeline-section">
         <div class="container">
-            <div class="about-content">
-                <h2>Company Timeline</h2>
-                <div class="timeline">
-                    <div class="timeline-item">
-                        <div class="timeline-year">2025</div>
-                        <div class="timeline-content">
-                            <h4>Company Founded</h4>
-                            <p>NHP STORE LLC was established in Kentucky with the goal of creating innovative multimedia tools and professional video download solutions.</p>
-                        </div>
+            <div class="section-header">
+                <div class="section-tag">&#10022; Timeline</div>
+                <h2 class="section-title">Our Journey</h2>
+            </div>
+            <div class="timeline">
+                <div class="timeline-item">
+                    <div class="timeline-dot">&#127970;</div>
+                    <div class="timeline-body">
+                        <div class="timeline-year">2025 &#8212; Q1</div>
+                        <h4>Company Founded</h4>
+                        <p>NHP STORE LLC was established in Kentucky with the goal of creating innovative multimedia tools and professional video download solutions.</p>
                     </div>
-                    <div class="timeline-item">
-                        <div class="timeline-year">2025</div>
-                        <div class="timeline-content">
-                            <h4>SnapTik Platform Launch</h4>
-                            <p>Launched SnapTik as a professional TikTok video downloader with focus on speed, quality, and user privacy.</p>
-                        </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-dot">&#128640;</div>
+                    <div class="timeline-body">
+                        <div class="timeline-year">2025 &#8212; Q2</div>
+                        <h4>SnapTik Platform Launch</h4>
+                        <p>Launched SnapTik as a professional TikTok video downloader with focus on speed, quality, and user privacy. Reached first million downloads.</p>
                     </div>
-                    <div class="timeline-item">
-                        <div class="timeline-year">Future</div>
-                        <div class="timeline-content">
-                            <h4>Expansion Plans</h4>
-                            <p>Planning to expand services globally, supporting multiple platforms and introducing AI-powered video processing.</p>
-                        </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-dot">&#127758;</div>
+                    <div class="timeline-body">
+                        <div class="timeline-year">2025 &#8212; Future</div>
+                        <h4>Global Expansion</h4>
+                        <p>Planning to expand services globally, supporting multiple platforms and introducing AI-powered video processing features.</p>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Values Section -->
-    <section class="about-section">
+    <!-- Values -->
+    <section class="values-section">
         <div class="container">
-            <div class="about-content">
-                <h2>Our Values</h2>
-                <div class="team-grid">
-                    <div class="team-card">
-                        <h4>🚀 Innovation</h4>
-                        <p>We continuously improve our technology to provide the fastest and most reliable video download experience.</p>
-                    </div>
-                    <div class="team-card">
-                        <h4>🔒 Privacy</h4>
-                        <p>We prioritize user privacy and don't store any downloaded videos or personal information.</p>
-                    </div>
-                    <div class="team-card">
-                        <h4>🆓 Accessibility</h4>
-                        <p>Our services remain free and accessible to users worldwide, regardless of their location or device.</p>
-                    </div>
-                    <div class="team-card">
-                        <h4>⚡ Performance</h4>
-                        <p>We maintain 99.9% uptime and ensure our servers can handle millions of requests daily.</p>
-                    </div>
-                </div>
+            <div class="section-header">
+                <div class="section-tag">&#10022; Values</div>
+                <h2 class="section-title">What We Stand For</h2>
+                <p class="section-desc">The principles that guide everything we do</p>
+            </div>
+            <div class="values-grid">
+                <div class="value-card"><div class="value-icon">&#128640;</div><h4>Innovation</h4><p>We continuously improve our technology to provide the fastest and most reliable video download experience.</p></div>
+                <div class="value-card"><div class="value-icon">&#128274;</div><h4>Privacy First</h4><p>We prioritize user privacy and do not store any downloaded videos or personal information. Ever.</p></div>
+                <div class="value-card"><div class="value-icon">&#127760;</div><h4>Accessibility</h4><p>Our services remain free and accessible to users worldwide, regardless of their location or device.</p></div>
+                <div class="value-card"><div class="value-icon">&#9889;</div><h4>Performance</h4><p>We maintain 99.9% uptime and ensure our servers can handle millions of requests daily without slowdowns.</p></div>
             </div>
         </div>
     </section>
 
-    <!-- Contact CTA -->
-    <section class="about-section" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; text-align: center;">
+    <!-- CTA -->
+    <section class="cta-section">
         <div class="container">
-            <h2>Get in Touch</h2>
-            <p class="lead">Have questions about our services or partnership opportunities?</p>
-            <div style="margin: 30px 0;">
-                <a href="/contact.html" class="btn btn-primary" style="background: white; color: #667eea; margin-right: 20px;">Contact Us</a>
-                <a href="mailto:nhp@snaptikks.com" class="btn btn-outline" style="border: 2px solid white; color: white;">Business Inquiries</a>
+            <div class="cta-box">
+                <h2>Get in Touch</h2>
+                <p>Have questions about our services or partnership opportunities?</p>
+                <div class="cta-buttons">
+                    <a href="/contact.html" class="btn-cta btn-cta-primary">Contact Us</a>
+                    <a href="mailto:nhp@snaptikks.com" class="btn-cta btn-cta-outline">Business Inquiries</a>
+                </div>
             </div>
         </div>
     </section>
@@ -288,11 +271,16 @@
         <div class="container">
             <div class="footer-grid">
                 <div class="footer-column">
+                    <h4>SnapTik</h4>
+                    <p class="footer-brand-text">The fastest free TikTok video downloader. No watermark, no installation, no limits. Trusted by millions worldwide.</p>
+                </div>
+                <div class="footer-column">
                     <h4>Company</h4>
                     <ul>
                         <li><a href="/about.html">About Us</a></li>
                         <li><a href="/contact.html">Contact</a></li>
                         <li><a href="/blog.html">Blog</a></li>
+                        <li><a href="/roadmap.html">Roadmap</a></li>
                     </ul>
                 </div>
                 <div class="footer-column">
@@ -306,27 +294,42 @@
                     <h4>Tools</h4>
                     <ul>
                         <li><a href="/">TikTok Downloader</a></li>
-                    </ul>
-                </div>
-                <div class="footer-column">
-                    <h4>Business</h4>
-                    <ul>
-                        <li><strong>NHP STORE LLC</strong></li>
-                        <li>Founded: 2025</li>
-                        <li>Email: nhp@snaptikks.com</li>
-                        <li>Address: Lexington, KY, US</li>
+                        <li><a href="/bulk-download.html">Bulk Download</a></li>
                     </ul>
                 </div>
             </div>
             <div class="footer-bottom">
-                <p>© 2025 SnapTik - TikTok Video Download Version 18.4 (150)</p>
-                <p class="company-info">Operated by <strong>NHP STORE LLC</strong> | Professional Video Download Solutions</p>
-                <p class="disclaimer">Note: SnapTik (TikTok video Downloader) is not a tool of TikTok, we have no relationship with TikTok or ByteDance Ltd.</p>
+                <p>&copy; 2025 SnapTik &#8212; TikTok Video Downloader v19.0</p>
+                <p class="company-info">Operated by <strong>NHP STORE LLC</strong> &middot; Professional Video Download Solutions</p>
+                <p class="disclaimer">SnapTik is not affiliated with TikTok or ByteDance Ltd.</p>
             </div>
         </div>
     </footer>
 
-    <script src="js/config.js"></script>
-    <script src="js/app.js"></script>
+    <script>
+        var menuToggle=document.getElementById('menuToggle');
+        var navMenu=document.getElementById('navMenu');
+        if(menuToggle&&navMenu){
+            menuToggle.addEventListener('click',function(){
+                navMenu.classList.toggle('active');
+                menuToggle.classList.toggle('active');
+            });
+            navMenu.querySelectorAll('a').forEach(function(link){
+                link.addEventListener('click',function(){
+                    navMenu.classList.remove('active');
+                    menuToggle.classList.remove('active');
+                });
+            });
+        }
+        var observer=new IntersectionObserver(function(entries){
+            entries.forEach(function(entry){
+                if(entry.isIntersecting) entry.target.classList.add('visible');
+            });
+        },{threshold:0.1,rootMargin:'0px 0px -40px 0px'});
+        document.querySelectorAll('.value-card,.timeline-item,.about-stat-card,.company-card').forEach(function(el){
+            el.classList.add('animate-on-scroll');
+            observer.observe(el);
+        });
+    </script>
 </body>
 </html>

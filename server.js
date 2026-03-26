@@ -10,6 +10,9 @@ const tiktokRoutes = require('./routes/tiktok');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+// Trust proxy (Nginx/Cloudflare sit in front of Express)
+app.set('trust proxy', 1);
+
 // Security middleware
 app.use(helmet({
     contentSecurityPolicy: false,

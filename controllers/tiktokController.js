@@ -90,17 +90,26 @@ exports.getProfileVideos = async (req, res) => {
         console.log(`Fetching videos for profile: @${cleanUsername}`);
 
         // Try to fetch profile videos using TikWM API
-        const tikwmResponse = await axios.post('https://www.tikwm.com/api/user/posts', {
-            unique_id: cleanUsername,
-            count: limit,
-            cursor: 0
-        }, {
-            headers: {
-                'Content-Type': 'application/json',
-                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
-            },
-            timeout: 15000
-        });
+        let tikwmResponse;
+        try {
+            tikwmResponse = await axios.post('https://www.tikwm.com/api/user/posts', {
+                unique_id: cleanUsername,
+                count: limit,
+                cursor: 0
+            }, {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
+                },
+                timeout: 15000
+            });
+        } catch (tikwmError) {
+            // Silently handle tikwm failures (403, timeout, etc.) — don't spam logs
+            return res.status(503).json({
+                success: false,
+                error: 'Profile video fetching is temporarily unavailable',
+            });
+        }
 
         if (tikwmResponse.data && tikwmResponse.data.code === 0 && tikwmResponse.data.data) {
             const videos = tikwmResponse.data.data.videos || [];
